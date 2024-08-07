@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('season_players', function (Blueprint $table) {
+        Schema::create('pagamentos', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_giocatore');
+            $table->integer('id_season_player');
+            $table->float('importo');
+            $table->string('tipo');
+            $table->string('modalita')->nullable();
+            $table->date('data');
             $table->integer('id_stagione');
-            $table->date('iscrizione');
-            $table->date('scadenza');
-            $table->string('matricola');
-            $table->date('autocer');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('season_players');
+        Schema::dropIfExists('pagamentos');
     }
 };

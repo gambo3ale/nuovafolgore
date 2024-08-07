@@ -28,6 +28,12 @@
                   <p>Iscrizioni</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{route('giocatore.listaIscritti')}}" class="nav-link">
+                    <i class="fa-solid fa-users nav-icon"></i>
+                  <p>Lista Iscritti</p>
+                </a>
+              </li>
               <li class="nav-item has-treeview ">
                 <a href="]" class="nav-link">
                     <i class="fa-solid fa-folder-tree nav-icon"></i>
@@ -37,7 +43,7 @@
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
                   <a href="{{route('admin.archivioIscritti')}}" class="nav-link {{ Request::is('admin.archivioIscritti') ? 'active' : '' }}">
-                    <i class="fa-solid fa-users"></i>
+                    <i class="fa-solid fa-users nav-icon"></i>
                       <p>Iscritti</p>
                     </a>
                   </li>

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Stagione;
 use App\Models\Genitore;
 use App\Models\Giocatore;
+use App\Models\Ricevuta;
 use Carbon\Carbon;
 
 class AdminController extends Controller
@@ -102,6 +103,24 @@ class AdminController extends Controller
                     $gio->save();
                 }
             }
+        }
+    }
+
+    public function allineaDate()
+    {
+        $r=Ricevuta::all();
+        foreach($r as $ri)
+        {
+            $d=explode("/",$ri->data_genitore);
+            //dd($d);
+            if($d!=null)
+                if($d[0]!=null)
+                    $ri->data_genitore_n=($d[2]."-".$d[1]."-".$d[0]);
+            $d2=explode("/",$ri->data_giocatore);
+            if($d2!=null)
+                if($d2[0]!=null)
+                    $ri->data_giocatore_n=($d2[2]."-".$d2[1]."-".$d2[0]);
+            $ri->save();
         }
     }
 }

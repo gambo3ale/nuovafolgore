@@ -172,4 +172,16 @@ class GiocatoreController extends Controller
         $data=['stag'=>$s,'gio'=>$g, 'sp'=>$sp];
         return response()->json($data , 200);
     }
+
+    public function listaIscritti()
+    {
+        if (Auth::check() )
+        {
+            $d=Carbon::now()->format('Y-m-d');
+            $s=Stagione::where('inizio','<',$d)->where('fine','>',$d)->first();
+            $data=['stag'=>$s];
+            return view('giocatore.listaIscritti')->with('data',$data);
+        }
+        return redirect(route('welcome'));
+    }
 }
