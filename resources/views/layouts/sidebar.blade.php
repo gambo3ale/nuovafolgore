@@ -22,64 +22,40 @@
     <!-- Sidebar Menu -->
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-            <div class="card bg-transparent">
-                <li class="nav-header {{(request()->is('preventivo*')) ? 'bg-info rounded' : '' }}  {{(request()->is('lavoro*')) ? 'bg-info rounded' : '' }}" data-toggle="collapse" href="#collapseCom"><i class="fa-solid fa-bag-shopping"></i>&emsp;COMMERCIALE</li>
-                <div class=" collapse" id="collapseCom">
-                  <li class="nav-item has-treeview ">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-calculator"></i>
-                    <p class="left"> Preventivi</p>
-                        <i class="right fas fa-angle-left"></i>
-
-                    </a>
-                    <ul class="nav nav-treeview">
-                      <li class="nav-item">
-                      <a href="#" class="nav-link {{ Request::is('CRM.Task') ? 'active' : '' }}">
-                        <i class="fas fa-list-ol nav-icon"></i>
-                          <p>Elenco</p>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-file-medical nav-icon"></i>
-                          <p>Nuovo</p>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="fa-solid fa-file-circle-plus nav-icon"></i>
-                          <p>Preventivatore</p>
-                        </a>
-                      </li>
-                    </ul>
-
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link {{ Request::is('lavoro') ? 'active' : '' }}">
-                        <i class="fa-solid fa-headset nav-icon"></i>
-                      <p>Commesse</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fa-solid fa-user-secret nav-icon"></i>
-                      <p>C.R.M.</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fa-solid fa-chart-column nav-icon"></i>
-                      <p>Costo CER</p>
-                    </a>
-                  </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link {{ Request::is('lavoro.amministratori') ? 'active' : '' }}">
-                    <i class="fa-solid fa-calendar-day nav-icon"></i>
-                  <p>Calendarizzazioni</p>
+            <li class="nav-item">
+                <a href="{{route('giocatore.create')}}" class="nav-link">
+                    <i class="fa-regular fa-pen-to-square nav-icon"></i>
+                  <p>Iscrizioni</p>
                 </a>
               </li>
-                </div>
-              </div>
+              <li class="nav-item has-treeview ">
+                <a href="]" class="nav-link">
+                    <i class="fa-solid fa-folder-tree nav-icon"></i>
+                <p class="left"> Archivio</p>
+                    <i class="right fas fa-angle-left"></i>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                  <a href="{{route('admin.archivioIscritti')}}" class="nav-link {{ Request::is('admin.archivioIscritti') ? 'active' : '' }}">
+                    <i class="fa-solid fa-users"></i>
+                      <p>Iscritti</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-file-medical nav-icon"></i>
+                      <p>Nuovo</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fa-solid fa-file-circle-plus nav-icon"></i>
+                      <p>Preventivatore</p>
+                    </a>
+                  </li>
+                </ul>
+
+              </li>
         </ul>
     </nav>
 </div>
