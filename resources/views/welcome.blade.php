@@ -16,41 +16,47 @@
         </style>
     </head>
     <body class="font-sans antialiased dark:bg-black dark:text-white/50">
-        <img src="/dist/img/logo.png" class="brand-image">
-        @if (Route::has('login'))
+        <div class="row">
+            <img src="/dist/img/logo.png" class="brand-image">
+        </div>
+        <div class="row">
+            @if (Route::has('login'))
 
-                @auth
+            @auth
+                <a
+                    href="{{ url('/dashboard') }}"
+                    class="border border-white rounded-3  px-3 py-2 text-black text-lg text-bold"
+                >
+                    Dashboard
+                </a>
+
+                <a
+                    href="{{ route('login') }}"
+                    class="border border-white rounded-3  px-3 py-2 text-black text-lg text-bold"
+                >
+                    Logout
+                </a>
+            @else
+                <a
+                    href="{{ route('login') }}"
+                    class="border border-white rounded-3  px-3 py-2 text-black text-lg text-bold"
+                >
+                    Log in
+                </a>
+
+                @if (Route::has('register'))
                     <a
-                        href="{{ url('/dashboard') }}"
+                        href="{{ route('register') }}"
                         class="border border-white rounded-3  px-3 py-2 text-black text-lg text-bold"
                     >
-                        Dashboard
+                        Register
                     </a>
+                @endif
+            @endauth
 
-                    <a
-                        href="{{ route('login') }}"
-                        class="border border-white rounded-3  px-3 py-2 text-black text-lg text-bold"
-                    >
-                        Logout
-                    </a>
-                @else
-                    <a
-                        href="{{ route('login') }}"
-                        class="border border-white rounded-3  px-3 py-2 text-black text-lg text-bold"
-                    >
-                        Log in
-                    </a>
+    @endif
+        </div>
 
-                    @if (Route::has('register'))
-                        <a
-                            href="{{ route('register') }}"
-                            class="border border-white rounded-3  px-3 py-2 text-black text-lg text-bold"
-                        >
-                            Register
-                        </a>
-                    @endif
-                @endauth
 
-        @endif
     </body>
 </html>
