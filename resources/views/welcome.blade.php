@@ -20,30 +20,36 @@
             <img src="/dist/img/logo.png" class="brand-image">
         </div>
         <div class="row mt-5">
+
             @if (Route::has('login'))
 
             @auth
+            <div class="col-3">
                 <a
-                    href="{{ url('/dashboard') }}"
-                    class="border border-white rounded-3  px-3 py-2 btn-danger text-lg text-bold"
-                >
-                    Dashboard
-                </a>
-
+                href="{{ url('/dashboard') }}"
+                class="border border-white rounded-3  px-3 py-2 btn-danger text-lg text-bold"
+            >
+                Dashboard
+            </a>
+            </div>
+            <div class="col-3">
                 <a
                     href="{{ route('login') }}"
                     class="border border-white rounded-3  px-3 py-2 btn-danger text-lg text-bold"
                 >
                     Logout
                 </a>
+            </div>
             @else
+            <div class="col-3">
                 <a
-                    href="{{ route('login') }}"
-                    class="border border-white rounded-3  px-3 py-2 btn-danger text-lg text-bold"
-                >
-                    Log in
-                </a>
-
+                href="{{ route('login') }}"
+                class="border border-white rounded-3  px-3 py-2 btn-danger text-lg text-bold"
+            >
+                Log in
+            </a>
+            </div>
+            <div class="col-3">
                 @if (Route::has('register'))
                     <a
                         href="{{ route('register') }}"
@@ -52,6 +58,9 @@
                         Register
                     </a>
                 @endif
+            </div>
+
+
             @endauth
 
     @endif
