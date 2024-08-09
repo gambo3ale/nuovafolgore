@@ -32,14 +32,14 @@
 
                 <a
                     href="{{ route('login') }}"
-                    class="border border-white rounded-3  px-3 py-2 text-black text-lg text-bold"
+                    class="border border-white rounded-3  px-3 py-2 btn-danger text-lg text-bold"
                 >
                     Logout
                 </a>
             @else
                 <a
                     href="{{ route('login') }}"
-                    class="border border-white rounded-3  px-3 py-2 text-black text-lg text-bold"
+                    class="border border-white rounded-3  px-3 py-2 btn-danger text-lg text-bold"
                 >
                     Log in
                 </a>
@@ -47,7 +47,7 @@
                 @if (Route::has('register'))
                     <a
                         href="{{ route('register') }}"
-                        class="border border-white rounded-3  px-3 py-2 text-black text-lg text-bold"
+                        class="border border-white rounded-3  px-3 py-2 btn-danger text-lg text-bold"
                     >
                         Register
                     </a>
