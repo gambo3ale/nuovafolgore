@@ -19,13 +19,13 @@
         <div class="row">
             <img src="/dist/img/logo.png" class="brand-image">
         </div>
-        <div class="row">
+        <div class="row mt-5">
             @if (Route::has('login'))
 
             @auth
                 <a
                     href="{{ url('/dashboard') }}"
-                    class="border border-white rounded-3  px-3 py-2 text-black text-lg text-bold"
+                    class="border border-white rounded-3  px-3 py-2 btn-danger text-lg text-bold"
                 >
                     Dashboard
                 </a>
