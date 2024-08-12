@@ -16,10 +16,12 @@ Route::get('/', function () {
 
 Route::get('/dashboard', [AdminController::class,'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/admin/archivioIscritti', [AdminController::class,'archivioIscritti'])->middleware(['auth', 'verified'])->name('admin.archivioIscritti');
+Route::get('/admin/archivioRicevute', [AdminController::class,'archivioRicevute'])->middleware(['auth', 'verified'])->name('admin.archivioRicevute');
 Route::get('/admin/allinea', [AdminController::class,'allinea'])->middleware(['auth', 'verified'])->name('admin.allinea');
 Route::get('/admin/allineaDate', [AdminController::class,'allineaDate'])->middleware(['auth', 'verified'])->name('admin.allineaDate');
 
 Route::get('/giocatore/create', [GiocatoreController::class,'create'])->middleware(['auth', 'verified'])->name('giocatore.create');
+Route::get('/giocatore/show/{id}', [GiocatoreController::class,'show'])->middleware(['auth', 'verified'])->name('giocatore.show');
 Route::get('/giocatore/listaIscritti', [GiocatoreController::class,'listaIscritti'])->middleware(['auth', 'verified'])->name('giocatore.listaIscritti');
 
 

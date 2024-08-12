@@ -184,4 +184,44 @@ class GiocatoreController extends Controller
         }
         return redirect(route('welcome'));
     }
+
+    public function ricevuteStagione(Request $request)
+    {
+        $gio=DB::table('ricevutas')
+        ->select('ricevutas.*')
+        ->selectRaw('YEAR(ricevutas.data) as anno')
+        ->where('ricevutas.id_stagione',$request->id)
+        ->orderBy('anno')->orderBy('ricevutas.numero')->get();
+        return response()->json($gio , 200);
+    }
+
+    public function scadenze(Request $request)
+    {
+        $d=Carbon::now()->format('Y-m-d');
+        $d2=Carbon::now()->addDays(30)->format('Y-m-d');
+        $s=Stagione::where('inizio','<',$d)->where('fine','>',$d)->first();
+
+        $notess=SeasonPlayer::where('id_stagione',$s->id)->whereNull('matricola')->count();
+        $scaduti=SeasonPlayer::where('id_stagione',$s->id)->where('scadenza','<',$d)->count();
+        $scadenza=SeasonPlayer::where('id_stagione',$s->id)->whereBetween('scadenza',[$d,$d2])->count();
+        $data=['notess'=>$notess,'scaduti'=>$scaduti,'scadenza'=>$scadenza];
+        return response()->json($data , 200);
+    }
+
+    public function modificaCertificato(Request $request)
+    {
+        $sp=SeasonPlayer::find($request->id);
+        $sp->scadenza=Carbon::parse($request->dat)->format('Y-m-d');
+        $sp->save();
+        return response()->json($sp , 200);
+    }
+
+    public function modificaMatricola(Request $request)
+    {
+        $sp=SeasonPlayer::find($request->id);
+        $sp->matricola=$request->mat;
+        $sp->save();
+        return response()->json($sp , 200);
+    }
+
 }

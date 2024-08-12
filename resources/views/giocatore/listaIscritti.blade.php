@@ -107,13 +107,39 @@ kendo.culture("it-IT");
             { field: "Quota", title: "Quota" , width:"8%"},
             { field: "id", title: "Az.", width:"25%", template: function(dataItem) {
 
-                            return '<a name="ricevuta" type="button" class="btn btn-sm btn-warning btn-table" id="'+dataItem.id+'" href="inserisciPagamento.php?id='+dataItem.id+'" data-toggle="tooltip" data-placement="bottom" title="Pagamento"><i class="fas fa-cash-register"></i></a> <button name="certificato" type="button" class="btn btn-sm btn-danger btn-table" id="'+dataItem.id+'" data-toggle="tooltip" data-placement="bottom" title="Certificato" onclick="inserisciCertificato('+dataItem.id+')" ><i class="fas fa-diagnoses"></i></button> <button name="tesseramento" onclick="inserisciTesseramento('+dataItem.id+')" type="button" class="btn btn-sm btn-success btn-table" id="'+dataItem.id+'" data-toggle="tooltip" data-placement="bottom" title="Tesseramento"><i class="fas fa-id-card"></i></button> <a name="riepilogo" type="button" class="btn btn-sm btn-primary btn-table" id="'+dataItem.id+'" href="schedaGiocatore.php?id='+dataItem.id+'" data-toggle="tooltip" data-placement="bottom" title="Scheda Gioc."><i class="fas fa-file-invoice"></i></a>';
+                            return '<a name="ricevuta" type="button" class="btn btn-sm btn-warning btn-table" id="'+dataItem.id+'" href="inserisciPagamento.php?id='+dataItem.id+'" data-toggle="tooltip" data-placement="bottom" title="Pagamento"><i class="fas fa-cash-register"></i></a> <button name="certificato" type="button" class="btn btn-sm btn-danger btn-table" id="'+dataItem.id+'" data-toggle="tooltip" data-placement="bottom" title="Certificato" onclick="inserisciCertificato('+dataItem.id+')" ><i class="fas fa-diagnoses"></i></button> <button name="tesseramento" onclick="inserisciTesseramento('+dataItem.id+')" type="button" class="btn btn-sm btn-success btn-table" id="'+dataItem.id+'" data-toggle="tooltip" data-placement="bottom" title="Tesseramento"><i class="fas fa-id-card"></i></button> <a name="riepilogo" type="button" class="btn btn-sm btn-primary btn-table" id="'+dataItem.id+'" href="{{route(`giocatore.show`,[id=>'+dataItem.idPlayer+'])}}" data-toggle="tooltip" data-placement="bottom" title="Scheda Gioc."><i class="fas fa-file-invoice"></i></a>';
                 }},
           ],
           pageable: true // Abilita la paginazione
         });
       });
     </script>
+
+<script>
+    function inserisciTesseramento(id)
+    {
+    var mat = prompt("Inserisci numero di matricola");
+    $.post( "{{route('giocatore.modificaMatricola')}}", {
+                          id: id,
+                          mat: mat
+                        })
+                        .done(function( data ) {
+                            $("#grid").data("kendoGrid").dataSource.read();
+                                    });
+    }
+
+    function inserisciCertificato(id)
+    {
+        var dat = prompt("Inserisci data di scadenza", "gg/mm/aaaa");
+        $.post( "{{route('giocatore.modificaCertificato')}}", {
+                          id: id,
+                          dat: dat
+                        })
+                        .done(function( data ) {
+                            $("#grid").data("kendoGrid").dataSource.read();
+                                    });
+    }
+</script>
 @endsection
 
 

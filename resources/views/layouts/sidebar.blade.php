@@ -48,15 +48,9 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-file-medical nav-icon"></i>
-                      <p>Nuovo</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fa-solid fa-file-circle-plus nav-icon"></i>
-                      <p>Preventivatore</p>
+                    <a href="{{route('admin.archivioRicevute')}}" class="nav-link">
+                        <i class="fa-solid fa-file-invoice nav-icon"></i>
+                      <p>Ricevute</p>
                     </a>
                   </li>
                 </ul>

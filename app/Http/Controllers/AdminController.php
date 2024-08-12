@@ -41,6 +41,19 @@ class AdminController extends Controller
         return redirect(route('welcome'));
     }
 
+    public function archivioRicevute()
+    {
+        if (Auth::check() )
+        {
+            $d=Carbon::now()->format('Y-m-d');
+            $stag=Stagione::orderBy('id','desc')->get();
+            $cor=Stagione::where('inizio','<',$d)->where('fine','>',$d)->first();
+            $data=['stag'=>$stag,'cor'=>$cor];
+            return view('admin.archivioRicevute')->with('data',$data);
+        }
+        return redirect(route('welcome'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -52,9 +65,14 @@ class AdminController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function modificaRicevuta(Request $request)
     {
-        //
+        $r=Ricevuta::find($request->id);
+        $r->numero=$request->num;
+        $r->data=$request->dataR;
+        $r->data_bonifico=$request->dataB;
+        $r->save();
+        return response()->json($r , 200);
     }
 
     /**

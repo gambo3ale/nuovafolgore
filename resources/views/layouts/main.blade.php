@@ -12,6 +12,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <title>@yield('title')</title>
   @yield('style')
 
+  <link rel="icon" href="{{ url('images/icona.ico') }}">
   <link rel="manifest" href="{{url('manifest.json')}}">
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
