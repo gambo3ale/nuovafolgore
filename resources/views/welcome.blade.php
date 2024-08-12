@@ -33,12 +33,12 @@
             </a>
             </div>
             <div class="col-3">
-                <a
-                    href="{{ route('login') }}"
-                    class="border border-white rounded-3  px-3 py-2 btn-danger text-lg text-bold"
-                >
+                <a href="#" class="border border-white rounded-3  px-3 py-2 btn-danger text-lg text-bold" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     Logout
                 </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
             </div>
             @else
             <div class="col-3">
