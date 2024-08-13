@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categoria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -117,6 +118,31 @@ class GiocatoreController extends Controller
     public function show(string $id)
     {
         //
+    }
+
+    public function squadra($id)
+    {
+        if (Auth::check() )
+        {
+            $cat=Categoria::find($id);
+            $data=['cat'=>$cat];
+            return view('giocatore.squadra')->with('data',$data);
+        }
+        return redirect(route('welcome'));
+    }
+
+    public function giocatoriSquadra(Request $request)
+    {
+        $cat=Categoria::find($request->id);
+        $sq=DB::table('season_players')
+        ->join('giocatores', 'giocatores.id', '=', 'season_players.id_giocatore')
+        ->where('giocatores.data_nascita','>=',$cat->inizio)
+        ->where('giocatores.data_nascita','<=',$cat->fine)
+        ->where('season_players.id_stagione',$cat->id_stagione)
+        ->join('genitores','genitores.id','giocatores.id_genitore')
+        ->select('season_players.*','giocatores.cognome','giocatores.nome','giocatores.data_nascita','giocatores.telefono','genitores.telefono as telefono_genitore')
+        ->orderBy('cognome')->get();
+        return response()->json($sq, 200);
     }
 
     /**

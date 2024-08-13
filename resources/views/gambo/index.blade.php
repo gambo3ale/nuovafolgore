@@ -101,7 +101,7 @@
 @section('content')
 <div class="container-fluid">
     <div class="row">
-        <div class="col-4">
+        <div class="col-5">
             <table class="table-sm table-striped">
                 <thead><th>ID</th><th>Name</th><th>Email</th><th>Stato</th><th>Ultimo Accesso</th><th></th></thead>
                 <tbody>
@@ -124,7 +124,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-8">
+        <div class="col-7">
             <div id="grid"></div>
         </div>
     </div>

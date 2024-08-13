@@ -25,6 +25,7 @@ Route::get('/admin/allineaDate', [AdminController::class,'allineaDate'])->middle
 
 Route::get('/giocatore/create', [GiocatoreController::class,'create'])->middleware(['auth', 'verified'])->name('giocatore.create');
 Route::get('/giocatore/show/{id}', [GiocatoreController::class,'show'])->middleware(['auth', 'verified'])->name('giocatore.show');
+Route::get('/giocatore/squadra/{id}', [GiocatoreController::class,'squadra'])->middleware(['auth', 'verified'])->name('giocatore.squadra');
 Route::get('/giocatore/listaIscritti', [GiocatoreController::class,'listaIscritti'])->middleware(['auth', 'verified'])->name('giocatore.listaIscritti');
 Route::get('/giocatore/inserisciPagamento/{id}', [GiocatoreController::class,'inserisciPagamento'])->middleware(['auth', 'verified'])->name('giocatore.inserisciPagamento');
 

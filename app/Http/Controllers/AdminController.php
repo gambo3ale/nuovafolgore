@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Categoria;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Stagione;
@@ -102,9 +103,12 @@ class AdminController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function getCategorie(Request $request)
     {
-        //
+        $d=Carbon::now()->format('Y-m-d');
+        $cor=Stagione::where('inizio','<',$d)->where('fine','>',$d)->first();
+        $cat=Categoria::where('id_stagione',$cor->id)->orderBy('inizio')->get();
+        return response()->json($cat , 200);
     }
 
     /**

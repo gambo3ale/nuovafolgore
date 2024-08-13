@@ -1,3 +1,18 @@
+<script>
+$(document).ready(function () {
+    $.post("{{route('admin.getCategorie')}}", {
+                          id: 0
+                        })
+                        .done(function( data ) {
+                            data.forEach(el => {
+                                var nodo="<li class='nav-item'><a href='/giocatore/squadra/"+el['id']+"' class='nav-link'><i class='fa-regular fa-flag nav-icon fa-lg'></i><p>";
+                                    nodo+=el['categoria_estesa']+"</p></a></li>";
+                                    $("#squadre").append(nodo);
+                            });
+                                    });
+});
+</script>
+
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{ route('dashboard') }}" class="brand-link">
@@ -40,6 +55,19 @@
                   <p>Ricevute</p>
                 </a>
               </li>
+
+              <li class="nav-item has-treeview">
+                <a href="]" class="nav-link">
+                    <i class="fa-solid fa-people-group nav-icon"></i>
+                <p class="left"> Squadre</p>
+                    <i class="right fas fa-angle-left"></i>
+                </a>
+                <ul class="nav nav-treeview" id="squadre">
+
+                </ul>
+
+              </li>
+
               <li class="nav-item has-treeview text-warning">
                 <a href="]" class="nav-link">
                     <i class="fa-solid fa-folder-tree nav-icon text-warning"></i>
@@ -62,6 +90,7 @@
                 </ul>
 
               </li>
+
 
               @if(Auth::user()->id==1)
               <li class="nav-item has-treeview text-info">

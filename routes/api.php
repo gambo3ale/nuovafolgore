@@ -23,8 +23,11 @@ Route::post('/giocatore/modificaCertificato', [GiocatoreController::class,'modif
 Route::post('/giocatore/modificaMatricola', [GiocatoreController::class,'modificaMatricola'])->name('giocatore.modificaMatricola');
 Route::post('/giocatore/registraPagamento', [GiocatoreController::class,'registraPagamento'])->name('giocatore.registraPagamento');
 Route::post('/giocatore/eliminaIscrizione', [GiocatoreController::class,'eliminaIscrizione'])->name('giocatore.eliminaIscrizione');
+Route::post('/giocatore/giocatoriSquadra', [GiocatoreController::class,'giocatoriSquadra'])->name('giocatore.giocatoriSquadra');
 
 Route::post('/admin/modificaRicevuta', [AdminController::class,'modificaRicevuta'])->name('admin.modificaRicevuta');
+Route::post('/admin/getCategorie', [AdminController::class,'getCategorie'])->name('admin.getCategorie');
+
 
 Route::post('/document/moduloIscrizione', [DocumentController::class,'moduloIscrizione'])->name('document.moduloIscrizione');
 Route::post('/document/stampaRicevuta', [DocumentController::class,'stampaRicevuta'])->name('document.stampaRicevuta');
