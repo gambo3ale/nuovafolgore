@@ -74,13 +74,13 @@
                   <li class="nav-item text-info table-primary">
                   <a href="{{route('gambo.index')}}" class="nav-link {{ Request::is('gambo.index') ? 'active' : '' }}">
                     <i class="fa-solid fa-users nav-icon fa-lg table-primary"></i>
-                      <p class="table-primary">Home</p>
+                      <p class="table-primary">Utenti e Log</p>
                     </a>
                   </li>
-                  <li class="nav-item text-warning table-warning">
+                  <li class="nav-item text-warning table-primary">
                     <a href="{{route('admin.archivioRicevute')}}" class="nav-link">
-                        <i class="fa-solid fa-file-invoice nav-icon fa-lg table-warning"></i>
-                      <p class="table-warning">Ricevute</p>
+                        <i class="fa-solid fa-file-invoice nav-icon fa-lg table-primary"></i>
+                      <p class="table-primary">Ricevute</p>
                     </a>
                   </li>
                 </ul>

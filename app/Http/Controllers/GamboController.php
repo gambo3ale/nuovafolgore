@@ -12,6 +12,7 @@ use App\Models\Genitore;
 use App\Models\Pagamento;
 use App\Models\SeasonPlayer;
 use App\Models\Ricevuta;
+use App\Models\LogAzione;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 
@@ -28,7 +29,7 @@ class GamboController extends Controller
             $s=Stagione::where('inizio','<',$d)->where('fine','>',$d)->first();
             $u=User::all();
             $usersWithStatus = $this->getAllUsersWithStatus();
-            $data=['stag'=>$s, 'user'=>$usersWithStatus];
+            $data=['stag'=>$s, 'user'=>$usersWithStatus, 'id_ut'=>Auth::user()->id];
             return view('gambo.index')->with('data',$data);
         }
         return redirect(route('welcome'));
@@ -118,5 +119,17 @@ class GamboController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function visualizzaLog(Request $request)
+    {
+        $d=Carbon::now()->format('Y-m-d');
+        $s=Stagione::where('inizio','<',$d)->where('fine','>',$d)->first();
+        $lg=DB::table('log_aziones')
+        ->join('giocatores','giocatores.id','log_aziones.id_giocatore')
+        ->where('log_aziones.id_stagione',$s->id)
+        ->where('id_utente',$request->id)
+        ->select('log_aziones.*','giocatores.cognome','giocatores.nome')->orderBy('created_at')->get();
+        return response()->json($lg , 200);
     }
 }

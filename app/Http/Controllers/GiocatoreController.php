@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\Models\Stagione;
 use App\Models\Giocatore;
 use App\Models\Genitore;
+use App\Models\LogAzione;
 use App\Models\Pagamento;
 use App\Models\SeasonPlayer;
 use App\Models\Ricevuta;
@@ -98,6 +99,15 @@ class GiocatoreController extends Controller
             $sp->scadenza=$old->scadenza;
         }
         $sp->save();
+
+        $lg=new LogAzione();
+        $lg->id_utente=$request->user_id;
+        $lg->id_giocatore=$sp->id_giocatore;
+        $lg->id_stagione=$sp->id_stagione;
+        $lg->id_season_player=$sp->id;
+        $lg->azione="Iscrizione";
+        $lg->save();
+
         return response()->json($gio , 200);
     }
 
@@ -130,9 +140,20 @@ class GiocatoreController extends Controller
      */
     public function eliminaIscrizione(Request $request)
     {
+        $spx=SeasonPlayer::find($request->id);
+        $lg=new LogAzione();
+        $lg->id_utente=$request->user_id;
+        $lg->id_giocatore=$spx->id_giocatore;
+        $lg->id_stagione=$spx->id_stagione;
+        $lg->id_season_player=$spx->id;
+        $lg->azione="Iscrizione eliminata";
+        $lg->save();
+
         $sp=SeasonPlayer::where('id',$request->id)->delete();
         $pag=Pagamento::where('id_season_player',$request->id)->delete();
         $ric=Ricevuta::where('id_season_player',$request->id)->delete();
+
+
         return response()->json("OK" , 200);
     }
 
@@ -225,6 +246,14 @@ class GiocatoreController extends Controller
         $sp=SeasonPlayer::find($request->id);
         $sp->scadenza=Carbon::parse($request->dat)->format('Y-m-d');
         $sp->save();
+
+        $lg=new LogAzione();
+        $lg->id_utente=$request->user_id;
+        $lg->id_giocatore=$sp->id_giocatore;
+        $lg->id_stagione=$sp->id_stagione;
+        $lg->id_season_player=$sp->id;
+        $lg->azione="Certificato consegnato";
+        $lg->save();
         return response()->json($sp , 200);
     }
 
@@ -233,6 +262,14 @@ class GiocatoreController extends Controller
         $sp=SeasonPlayer::find($request->id);
         $sp->matricola=$request->mat;
         $sp->save();
+
+        $lg=new LogAzione();
+        $lg->id_utente=$request->user_id;
+        $lg->id_giocatore=$sp->id_giocatore;
+        $lg->id_stagione=$sp->id_stagione;
+        $lg->id_season_player=$sp->id;
+        $lg->azione="Tesseramento registrato";
+        $lg->save();
         return response()->json($sp , 200);
     }
 
@@ -297,6 +334,23 @@ class GiocatoreController extends Controller
             $ric->id_stagione=$dati['id_stagione'];
             $ric->save();
         }
+
+        $sp=SeasonPlayer::find($dati['id_season_player']);
+        $lg=new LogAzione();
+        $lg->id_utente=$request->user_id;
+        $lg->id_giocatore=$sp->id_giocatore;
+        $lg->id_stagione=$sp->id_stagione;
+        $lg->id_season_player=$sp->id;
+        $lg->azione="Pagamento Registrato";
+        $lg->save();
+
+        $lg=new LogAzione();
+        $lg->id_utente=$request->user_id;
+        $lg->id_giocatore=$sp->id_giocatore;
+        $lg->id_stagione=$sp->id_stagione;
+        $lg->id_season_player=$sp->id;
+        $lg->azione="Emissione Ricevuta n. ".$ric->numero;
+        $lg->save();
         return response()->json($ric , 200);
     }
 

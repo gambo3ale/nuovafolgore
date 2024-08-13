@@ -128,6 +128,7 @@
             event.preventDefault();
             $.post( "{{route('giocatore.store')}}", {
                             dati: $(this).serialize(),
+                            user_id: {{Auth::user()->id}}
                         })
                         .done(function( data ) {
                             alert('Iscrizione registrata con successo!');

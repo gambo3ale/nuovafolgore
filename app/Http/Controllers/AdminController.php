@@ -9,6 +9,8 @@ use App\Models\Stagione;
 use App\Models\Genitore;
 use App\Models\Giocatore;
 use App\Models\Ricevuta;
+use App\Models\LogAzione;
+use App\Models\SeasonPlayer;
 use Carbon\Carbon;
 
 class AdminController extends Controller
@@ -85,6 +87,15 @@ class AdminController extends Controller
         $r->data=$request->dataR;
         $r->data_bonifico=$request->dataB;
         $r->save();
+
+        $sp=SeasonPlayer::find($r->id_season_player);
+        $lg=new LogAzione();
+        $lg->id_utente=$request->user_id;
+        $lg->id_giocatore=$sp->id_giocatore;
+        $lg->id_stagione=$sp->id_stagione;
+        $lg->id_season_player=$sp->id;
+        $lg->azione="Modifica ricevuta n. ".$r->numero;
+        $lg->save();
         return response()->json($r , 200);
     }
 

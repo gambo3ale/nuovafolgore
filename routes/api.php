@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GiocatoreController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\GamboController;
 
 
 Route::get('/user', function (Request $request) {
@@ -27,3 +28,5 @@ Route::post('/admin/modificaRicevuta', [AdminController::class,'modificaRicevuta
 
 Route::post('/document/moduloIscrizione', [DocumentController::class,'moduloIscrizione'])->name('document.moduloIscrizione');
 Route::post('/document/stampaRicevuta', [DocumentController::class,'stampaRicevuta'])->name('document.stampaRicevuta');
+
+Route::post('/gambo/visualizzaLog', [GamboController::class,'visualizzaLog'])->name('gambo.visualizzaLog');
