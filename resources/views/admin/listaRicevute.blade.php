@@ -130,16 +130,6 @@
         });
       });
 
-      $("#stagione").change(function() {
-                id=$("#stagione").val();
-                // Ottieni l'istanza della Grid Kendo UI
-                var grid = $("#grid").data("kendoGrid");
-
-                // Ricarica i dati della Grid
-                grid.dataSource.read();
-                grid.refresh();
-            });
-
 
 function modificaRicevuta(id,num,dataR,dataBon)
 {
@@ -190,18 +180,11 @@ function stampaRicevuta(ev,id)
 
 @section('content')
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-2">
-        <b>Seleziona stagione sportiva</b>
+    <div class="row">
+        <div class="col-12">
+            <h4><b><i class="fa-solid fa-file-invoice fa-lg"></i>&ensp;Elenco Ricevute - {{$data['cor']->descrizione}}</b></h4>
+        </div>
     </div>
-    <div class="col-3">
-        <select class="form-select" id="stagione">
-            @foreach ($data['stag'] as $s)
-                <option value="{{$s->id}}" @if($s->id==$data['cor']->id) selected @endif>{{$s->descrizione}}</option>
-            @endforeach
-        </select>
-    </div>
-  </div>
     <div class="row">
         <div class="col-12">
             <div id="grid"></div>

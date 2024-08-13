@@ -54,6 +54,19 @@ class AdminController extends Controller
         return redirect(route('welcome'));
     }
 
+    public function listaRicevute()
+    {
+        if (Auth::check() )
+        {
+            $d=Carbon::now()->format('Y-m-d');
+            $stag=Stagione::orderBy('id','desc')->get();
+            $cor=Stagione::where('inizio','<',$d)->where('fine','>',$d)->first();
+            $data=['stag'=>$stag,'cor'=>$cor];
+            return view('admin.listaRicevute')->with('data',$data);
+        }
+        return redirect(route('welcome'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */

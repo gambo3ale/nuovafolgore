@@ -9,7 +9,9 @@ use Carbon\Carbon;
 use App\Models\Stagione;
 use App\Models\Giocatore;
 use App\Models\Genitore;
+use App\Models\Pagamento;
 use App\Models\SeasonPlayer;
+use App\Models\Ricevuta;
 
 class GiocatoreController extends Controller
 {
@@ -126,20 +128,30 @@ class GiocatoreController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function eliminaIscrizione(Request $request)
     {
-        //
+        $sp=SeasonPlayer::where('id',$request->id)->delete();
+        $pag=Pagamento::where('id_season_player',$request->id)->delete();
+        $ric=Ricevuta::where('id_season_player',$request->id)->delete();
+        return response()->json("OK" , 200);
     }
 
     public function listaStagione(Request $request)
     {
-        $gio=DB::table('season_players')
-        ->join('giocatores','giocatores.id','season_players.id_giocatore')
-        ->select('season_players.*','giocatores.cognome','giocatores.nome','giocatores.data_nascita')
-        ->selectRaw('YEAR(giocatores.data_nascita) as anno_nascita')
-        ->where('season_players.id_stagione',$request->id)
-        ->orderBy('anno_nascita')->orderBy('cognome')->get();
-        return response()->json($gio , 200);
+        $gio = DB::table('season_players')
+            ->join('giocatores', 'giocatores.id', '=', 'season_players.id_giocatore')
+            ->join(DB::raw('(SELECT id_season_player, SUM(importo) as pagato FROM pagamentos GROUP BY id_season_player) as pagamento_sum'), function($join) {
+                $join->on('pagamento_sum.id_season_player', '=', 'season_players.id');
+            })
+            ->select('season_players.*', 'giocatores.cognome', 'giocatores.nome', 'giocatores.data_nascita')
+            ->selectRaw('YEAR(giocatores.data_nascita) as anno_nascita')
+            ->selectRaw('pagamento_sum.pagato')
+            ->where('season_players.id_stagione', $request->id)
+            ->orderBy('anno_nascita')
+            ->orderBy('cognome')
+            ->get();
+
+        return response()->json($gio, 200);
     }
 
     public function archivioStagione(Request $request)
@@ -222,6 +234,70 @@ class GiocatoreController extends Controller
         $sp->matricola=$request->mat;
         $sp->save();
         return response()->json($sp , 200);
+    }
+
+    public function inserisciPagamento($id)
+    {
+        if (Auth::check() )
+        {
+            $sp=SeasonPlayer::find($id);
+            $gio=Giocatore::find($sp->id_giocatore);
+            $gen=Genitore::find($gio->id_genitore);
+            $ric=Ricevuta::whereYear('data',Carbon::now()->format('Y'))->orderBy('numero','desc')->first();
+            $num=1;
+            if($ric!=null)
+                $num=($ric->numero+1);
+            $data=['gio'=>$gio,'gen'=>$gen,'sp'=>$sp,'num'=>$num];
+            return view('giocatore.inserisciPagamento')->with('data',$data);
+        }
+        return redirect(route('welcome'));
+    }
+
+    public function registraPagamento(Request $request)
+    {
+        parse_str($request->dati, $dati);
+        $pag=new Pagamento();
+        $pag->id_season_player=$dati['id_season_player'];
+        $pag->importo=$dati['importo'];
+        $pag->tipo=$dati['tipo'];
+        $pag->modalita=$dati['bonifico'];
+        $pag->data=$dati['data_pagamento'];
+        $pag->id_stagione=$dati['id_stagione'];
+        $pag->save();
+
+        $ric=null;
+        if($dati['bonifico']!=4)
+        {
+            $ric=new Ricevuta();
+            $ric->numero=$dati['numero'];
+            $ric->data=$dati['data_ricevuta'];
+            $ric->importo=$dati['importo'];
+            $ric->cognome_genitore=$dati['cognome_genitore'];
+            $ric->nome_genitore=$dati['nome_genitore'];
+            $ric->data_genitore=$dati['data_genitore'];
+            $ric->data_genitore_n=$dati['data_genitore'];
+            $ric->luogo_genitore=$dati['luogo_genitore'];
+            $ric->codice_genitore=$dati['codice_genitore'];
+            $ric->cognome_giocatore=$dati['cognome_giocatore'];
+            $ric->nome_giocatore=$dati['nome_giocatore'];
+            $ric->data_giocatore_n=$dati['data_giocatore'];
+            $ric->data_giocatore=$dati['data_giocatore'];
+            $ric->luogo_giocatore=$dati['luogo_giocatore'];
+            $ric->codice_giocatore=$dati['codice_giocatore'];
+            $ric->bonifico=$dati['bonifico'];
+            $ric->data_bonifico=$dati['data_pagamento'];
+            $ric->intestato=$dati['intestato'];
+            if($dati['tipo']=="RATA")
+                $ric->tipo=0;
+            if($dati['tipo']=="SALDO")
+                $ric->tipo=1;
+            else
+                $ric->tipo=2;
+            $ric->id_season_player=$dati['id_season_player'];
+            $ric->id_stagione=$dati['id_stagione'];
+            $ric->save();
+        }
+        return response()->json($ric , 200);
     }
 
 }

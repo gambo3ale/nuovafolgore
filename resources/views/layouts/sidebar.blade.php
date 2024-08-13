@@ -24,33 +24,39 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-item">
                 <a href="{{route('giocatore.create')}}" class="nav-link">
-                    <i class="fa-regular fa-pen-to-square nav-icon"></i>
+                    <i class="fa-regular fa-pen-to-square nav-icon fa-lg"></i>
                   <p>Iscrizioni</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="{{route('giocatore.listaIscritti')}}" class="nav-link">
-                    <i class="fa-solid fa-users nav-icon"></i>
+                    <i class="fa-solid fa-users nav-icon fa-lg"></i>
                   <p>Lista Iscritti</p>
                 </a>
               </li>
-              <li class="nav-item has-treeview ">
-                <a href="]" class="nav-link">
-                    <i class="fa-solid fa-folder-tree nav-icon"></i>
-                <p class="left"> Archivio</p>
-                    <i class="right fas fa-angle-left"></i>
+              <li class="nav-item">
+                <a href="{{route('admin.listaRicevute')}}" class="nav-link">
+                    <i class="fa-solid fa-file-invoice nav-icon fa-lg"></i>
+                  <p>Ricevute</p>
                 </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
+              </li>
+              <li class="nav-item has-treeview text-warning">
+                <a href="]" class="nav-link">
+                    <i class="fa-solid fa-folder-tree nav-icon text-warning"></i>
+                <p class="left text-warning"> Archivio</p>
+                    <i class="right fas fa-angle-left text-warning"></i>
+                </a>
+                <ul class="nav nav-treeview table-warning">
+                  <li class="nav-item text-warning table-warning">
                   <a href="{{route('admin.archivioIscritti')}}" class="nav-link {{ Request::is('admin.archivioIscritti') ? 'active' : '' }}">
-                    <i class="fa-solid fa-users nav-icon"></i>
-                      <p>Iscritti</p>
+                    <i class="fa-solid fa-users nav-icon fa-lg table-warning"></i>
+                      <p class="table-warning">Iscritti</p>
                     </a>
                   </li>
-                  <li class="nav-item">
+                  <li class="nav-item text-warning table-warning">
                     <a href="{{route('admin.archivioRicevute')}}" class="nav-link">
-                        <i class="fa-solid fa-file-invoice nav-icon"></i>
-                      <p>Ricevute</p>
+                        <i class="fa-solid fa-file-invoice nav-icon fa-lg table-warning"></i>
+                      <p class="table-warning">Ricevute</p>
                     </a>
                   </li>
                 </ul>

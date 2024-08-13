@@ -43,7 +43,7 @@ kendo.culture("it-IT");
                   nascita: {field: "data_nascita", type:"date"},
                   scadenza: {field: "scadenza", type:"date"},
                   matricola: {field: "matricola", type:"string"},
-                  Quota: {field: "Quota", type: "number" }
+                  pagato: {field: "pagato", type: "number" }
                 }
               }
             },
@@ -65,7 +65,7 @@ kendo.culture("it-IT");
             },
           columns: [
 			{ field: "id", title: "Az.", width:"3%", template: function(dataItem) {
-				return '<button name="elimina" type="button" class="btn btn-xs btn-light" id="'+dataItem.id+'" data-toggle="tooltip" data-placement="bottom" title="Elimina Giocatore" onclick="eliminaGiocatore('+dataItem.id+')" ><i class="fa fa-user-times text-danger"></i></button>';
+				return '<button name="elimina" type="button" class="btn btn-xs btn-light" id="'+dataItem.id+'" data-toggle="tooltip" data-placement="bottom" title="Elimina Giocatore" onclick="eliminaIscrizione('+dataItem.id+')" ><i class="fa fa-user-times text-danger"></i></button>';
 			}},
             { field: "anno", title: "Anno", width:"5%",  filterable: { multi: true } },
 			{ field: "idPlayer",	title: "Foto",	template: '<img src="./../images/foto/player#= idPlayer #.jpg" alt="NP" width="40" height="50" />'},
@@ -104,10 +104,13 @@ kendo.culture("it-IT");
 
 					}},
             { field: "matricola", title: "N.Matricola" , width:"8%"},
-            { field: "Quota", title: "Quota" , width:"8%"},
+            { field: "pagato", title: "Quota" , width:"8%"},
             { field: "id", title: "Az.", width:"25%", template: function(dataItem) {
 
-                            return '<a name="ricevuta" type="button" class="btn btn-sm btn-warning btn-table" id="'+dataItem.id+'" href="inserisciPagamento.php?id='+dataItem.id+'" data-toggle="tooltip" data-placement="bottom" title="Pagamento"><i class="fas fa-cash-register"></i></a> <button name="certificato" type="button" class="btn btn-sm btn-danger btn-table" id="'+dataItem.id+'" data-toggle="tooltip" data-placement="bottom" title="Certificato" onclick="inserisciCertificato('+dataItem.id+')" ><i class="fas fa-diagnoses"></i></button> <button name="tesseramento" onclick="inserisciTesseramento('+dataItem.id+')" type="button" class="btn btn-sm btn-success btn-table" id="'+dataItem.id+'" data-toggle="tooltip" data-placement="bottom" title="Tesseramento"><i class="fas fa-id-card"></i></button> <a name="riepilogo" type="button" class="btn btn-sm btn-primary btn-table" id="'+dataItem.id+'" href="{{route(`giocatore.show`,[id=>'+dataItem.idPlayer+'])}}" data-toggle="tooltip" data-placement="bottom" title="Scheda Gioc."><i class="fas fa-file-invoice"></i></a>';
+                return '<a name="ricevuta" type="button" class="btn btn-sm btn-warning btn-table" id="'+dataItem.id+'" href="/giocatore/inserisciPagamento/'+dataItem.id+'" data-toggle="tooltip" data-placement="bottom" title="Pagamento"><i class="fas fa-cash-register"></i></a> ' +
+'<button name="certificato" type="button" class="btn btn-sm btn-danger btn-table" id="'+dataItem.id+'" data-toggle="tooltip" data-placement="bottom" title="Certificato" onclick="inserisciCertificato('+dataItem.id+')"><i class="fas fa-diagnoses"></i></button> ' +
+'<button name="tesseramento" onclick="inserisciTesseramento('+dataItem.id+')" type="button" class="btn btn-sm btn-success btn-table" id="'+dataItem.id+'" data-toggle="tooltip" data-placement="bottom" title="Tesseramento"><i class="fas fa-id-card"></i></button> ' +
+'<a name="riepilogo" type="button" class="btn btn-sm btn-primary btn-table" id="'+dataItem.id+'" href="/giocatore/show/'+dataItem.idPlayer+'" data-toggle="tooltip" data-placement="bottom" title="Scheda Gioc."><i class="fas fa-file-invoice"></i></a>';
                 }},
           ],
           pageable: true // Abilita la paginazione
@@ -138,6 +141,18 @@ kendo.culture("it-IT");
                         .done(function( data ) {
                             $("#grid").data("kendoGrid").dataSource.read();
                                     });
+    }
+
+    function eliminaIscrizione(id)
+    {
+        if(!confirm("Eliminare il giocatore selezionato?"))
+            return 0;
+        $.post( "{{route('giocatore.eliminaIscrizione')}}", {
+            id: id, })
+            .done(function( data ) {
+                alert("Iscrizione Eliminata!")
+                $("#grid").data("kendoGrid").dataSource.read();
+                        });
     }
 </script>
 @endsection
