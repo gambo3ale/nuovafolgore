@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GiocatoreController;
+use App\Http\Controllers\GamboController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -14,7 +15,7 @@ Route::get('/', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');*/
 
-
+Route::middleware([\App\Http\Middleware\UpdateUserActivity::class, 'auth'])->group(function () {
 Route::get('/dashboard', [AdminController::class,'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/admin/archivioIscritti', [AdminController::class,'archivioIscritti'])->middleware(['auth', 'verified'])->name('admin.archivioIscritti');
 Route::get('/admin/archivioRicevute', [AdminController::class,'archivioRicevute'])->middleware(['auth', 'verified'])->name('admin.archivioRicevute');
@@ -28,10 +29,27 @@ Route::get('/giocatore/listaIscritti', [GiocatoreController::class,'listaIscritt
 Route::get('/giocatore/inserisciPagamento/{id}', [GiocatoreController::class,'inserisciPagamento'])->middleware(['auth', 'verified'])->name('giocatore.inserisciPagamento');
 
 
+Route::get('gambo/index', [GamboController::class,'index'])->middleware(['auth', 'verified'])->name('gambo.index');
+});
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/test-middleware', function () {
+    // Codice di test
+})->middleware([\App\Http\Middleware\UpdateUserActivity::class, 'auth']);
+
+Route::get('/check-auth', function () {
+    if (Auth::check()) {
+        return 'Authenticated user ID: ' . Auth::id();
+    }
+    return 'User is not authenticated';
+});
+
+Route::get('/test-user-activity', function () {
+    return 'Testing User Activity Middleware';
+})->middleware([\App\Http\Middleware\UpdateUserActivity::class, 'auth']);
 
 require __DIR__.'/auth.php';

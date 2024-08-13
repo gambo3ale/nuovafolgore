@@ -62,6 +62,31 @@
                 </ul>
 
               </li>
+
+              @if(Auth::user()->id==1)
+              <li class="nav-item has-treeview text-info">
+                <a href="]" class="nav-link">
+                    <i class="fa-solid fa-crown nav-icon text-info"></i>
+                <p class="left text-info"> Amministratore</p>
+                    <i class="right fas fa-angle-left text-info"></i>
+                </a>
+                <ul class="nav nav-treeview table-primary">
+                  <li class="nav-item text-info table-primary">
+                  <a href="{{route('gambo.index')}}" class="nav-link {{ Request::is('gambo.index') ? 'active' : '' }}">
+                    <i class="fa-solid fa-users nav-icon fa-lg table-primary"></i>
+                      <p class="table-primary">Home</p>
+                    </a>
+                  </li>
+                  <li class="nav-item text-warning table-warning">
+                    <a href="{{route('admin.archivioRicevute')}}" class="nav-link">
+                        <i class="fa-solid fa-file-invoice nav-icon fa-lg table-warning"></i>
+                      <p class="table-warning">Ricevute</p>
+                    </a>
+                  </li>
+                </ul>
+
+              </li>
+              @endif
         </ul>
     </nav>
 </div>
