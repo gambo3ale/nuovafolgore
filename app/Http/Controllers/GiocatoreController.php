@@ -49,10 +49,10 @@ class GiocatoreController extends Controller
         $old=null;
         $gio=null;
         $gen=null;
+        $d=Carbon::now()->format('Y-m-d');
+        $s=Stagione::where('inizio','<',$d)->where('fine','>',$d)->first();
         if($dati['id_giocatore']!=-1)
         {
-            $d=Carbon::now()->format('Y-m-d');
-            $s=Stagione::where('inizio','<',$d)->where('fine','>',$d)->first();
             $gio=Giocatore::find($dati['id_giocatore']);
             $gen=Genitore::find($gio->id_genitore);
             $old=SeasonPlayer::where('id_stagione',($s->id)-1)->where('id_giocatore',$gio->id)->first();
