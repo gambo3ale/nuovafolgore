@@ -6,6 +6,7 @@ use App\Http\Controllers\GiocatoreController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GamboController;
+use App\Http\Controllers\PartitaController;
 
 
 Route::get('/user', function (Request $request) {
@@ -28,8 +29,17 @@ Route::post('/giocatore/giocatoriSquadra', [GiocatoreController::class,'giocator
 Route::post('/admin/modificaRicevuta', [AdminController::class,'modificaRicevuta'])->name('admin.modificaRicevuta');
 Route::post('/admin/getCategorie', [AdminController::class,'getCategorie'])->name('admin.getCategorie');
 
+Route::get('/partita/cercaAvversario', [PartitaController::class,'cercaAvversario'])->name('partita.cercaAvversario');
+Route::get('/partita/cercaCampo', [PartitaController::class,'cercaCampo'])->name('partita.cercaCampo');
+Route::post('/partita/store', [PartitaController::class,'store'])->name('partita.store');
+
+
 
 Route::post('/document/moduloIscrizione', [DocumentController::class,'moduloIscrizione'])->name('document.moduloIscrizione');
 Route::post('/document/stampaRicevuta', [DocumentController::class,'stampaRicevuta'])->name('document.stampaRicevuta');
 
 Route::post('/gambo/visualizzaLog', [GamboController::class,'visualizzaLog'])->name('gambo.visualizzaLog');
+Route::post('/gambo/visualizzaCampi', [GamboController::class,'visualizzaCampi'])->name('gambo.visualizzaCampi');
+Route::post('/gambo/salvaCampo', [GamboController::class,'salvaCampo'])->name('gambo.salvaCampo');
+Route::post('/gambo/visualizzaSquadre', [GamboController::class,'visualizzaSquadre'])->name('gambo.visualizzaSquadre');
+Route::post('/gambo/salvaSquadra', [GamboController::class,'salvaSquadra'])->name('gambo.salvaSquadra');

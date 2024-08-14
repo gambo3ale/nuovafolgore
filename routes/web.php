@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GiocatoreController;
 use App\Http\Controllers\GamboController;
+use App\Http\Controllers\PartitaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -29,8 +30,11 @@ Route::get('/giocatore/squadra/{id}', [GiocatoreController::class,'squadra'])->m
 Route::get('/giocatore/listaIscritti', [GiocatoreController::class,'listaIscritti'])->middleware(['auth', 'verified'])->name('giocatore.listaIscritti');
 Route::get('/giocatore/inserisciPagamento/{id}', [GiocatoreController::class,'inserisciPagamento'])->middleware(['auth', 'verified'])->name('giocatore.inserisciPagamento');
 
+Route::get('/partita/create', [PartitaController::class,'create'])->middleware(['auth', 'verified'])->name('partita.create');
+
 
 Route::get('gambo/index', [GamboController::class,'index'])->middleware(['auth', 'verified'])->name('gambo.index');
+Route::get('gambo/campi', [GamboController::class,'campi'])->middleware(['auth', 'verified'])->name('gambo.campi');
 });
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

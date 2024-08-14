@@ -58,12 +58,35 @@ $(document).ready(function () {
 
               <li class="nav-item has-treeview">
                 <a href="]" class="nav-link">
-                    <i class="fa-solid fa-people-group nav-icon"></i>
+                    <i class="fa-solid fa-people-group nav-icon fa-lg"></i>
                 <p class="left"> Squadre</p>
                     <i class="right fas fa-angle-left"></i>
                 </a>
                 <ul class="nav nav-treeview" id="squadre">
 
+                </ul>
+
+              </li>
+
+              <li class="nav-item has-treeview">
+                <a href="]" class="nav-link">
+                    <i class="fa-regular fa-futbol nav-icon fa-lg"></i>
+                <p class="left"> Partite</p>
+                    <i class="right fas fa-angle-left"></i>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{route('partita.create')}}" class="nav-link">
+                            <i class="fa-regular fa-square-plus nav-icon fa-lg"></i>
+                          <p>Aggiungi</p>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="{{route('admin.listaRicevute')}}" class="nav-link">
+                            <i class="fa-regular fa-calendar-days nav-icon fa-lg"></i>
+                          <p>Calendario</p>
+                        </a>
+                      </li>
                 </ul>
 
               </li>
@@ -107,9 +130,9 @@ $(document).ready(function () {
                     </a>
                   </li>
                   <li class="nav-item text-warning table-primary">
-                    <a href="{{route('admin.archivioRicevute')}}" class="nav-link">
-                        <i class="fa-solid fa-file-invoice nav-icon fa-lg table-primary"></i>
-                      <p class="table-primary">Ricevute</p>
+                    <a href="{{route('gambo.campi')}}" class="nav-link">
+                        <i class="fa-solid fa-building-flag nav-icon fa-lg table-primary"></i>
+                      <p class="table-primary">Impianti e Squadre</p>
                     </a>
                   </li>
                 </ul>

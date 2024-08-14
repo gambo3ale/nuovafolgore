@@ -118,7 +118,7 @@
                                 @endif
                             </td>
                             <td>{{ $u['lastSeen'] }}</td>
-                            <td><button class="btn btn-primary" onclick="visualuizzaLog({{$u['id']}})"><i class="fa-solid fa-receipt"></i></button></td>
+                            <td><button class="btn btn-primary" onclick="visualizzaLog({{$u['id']}})"><i class="fa-solid fa-receipt"></i></button></td>
                         </tr>
                     @endforeach
                 </tbody>

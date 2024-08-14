@@ -14,6 +14,8 @@ use App\Models\SeasonPlayer;
 use App\Models\Ricevuta;
 use App\Models\LogAzione;
 use App\Models\User;
+use App\Models\Campo;
+use App\Models\Squadra;
 use Illuminate\Support\Facades\Cache;
 
 class GamboController extends Controller
@@ -31,6 +33,18 @@ class GamboController extends Controller
             $usersWithStatus = $this->getAllUsersWithStatus();
             $data=['stag'=>$s, 'user'=>$usersWithStatus, 'id_ut'=>Auth::user()->id];
             return view('gambo.index')->with('data',$data);
+        }
+        return redirect(route('welcome'));
+    }
+
+    public function campi()
+    {
+        if (Auth::check() )
+        {
+            $d=Carbon::now()->format('Y-m-d');
+            $s=Stagione::where('inizio','<',$d)->where('fine','>',$d)->first();
+            $data=['stag'=>$s, 'id_ut'=>Auth::user()->id];
+            return view('gambo.campi')->with('data',$data);
         }
         return redirect(route('welcome'));
     }
@@ -84,17 +98,36 @@ class GamboController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function salvaCampo(Request $request)
     {
-        //
+        parse_str($request->dati, $dati);
+        $c=Campo::create($dati);
+        return response()->json($c , 200);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function visualizzaSquadre(Request $request)
     {
-        //
+        $c=Squadra::orderBy('nome')->get();
+        return response()->json($c , 200);
+    }
+
+    public function salvaSquadra(Request $request)
+    {
+        parse_str($request->dati, $dati);
+        $c=Squadra::create($dati);
+        return response()->json($c , 200);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function visualizzaCampi(Request $request)
+    {
+        $c=Campo::orderBy('comune')->get();
+        return response()->json($c , 200);
     }
 
     /**
