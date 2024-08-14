@@ -187,7 +187,7 @@ class GiocatoreController extends Controller
     {
         $gio = DB::table('season_players')
             ->join('giocatores', 'giocatores.id', '=', 'season_players.id_giocatore')
-            ->join(DB::raw('(SELECT id_season_player, SUM(importo) as pagato FROM pagamentos GROUP BY id_season_player) as pagamento_sum'), function($join) {
+            ->leftJoin(DB::raw('(SELECT id_season_player, SUM(importo) as pagato FROM pagamentos GROUP BY id_season_player) as pagamento_sum'), function($join) {
                 $join->on('pagamento_sum.id_season_player', '=', 'season_players.id');
             })
             ->select('season_players.*', 'giocatores.cognome', 'giocatores.nome', 'giocatores.data_nascita')
