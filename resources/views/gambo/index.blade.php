@@ -61,8 +61,8 @@
                 fields: {
                   id: {field:"id", type: "number" },
 				  id_season_player: {field:"id_season_player", type: "number" },
-                  cognome: {field: "cognome_giocatore", type:"string"},
-                  nome: {field: "nome_giocatore", type:"string"},
+                  cognome: {field: "cognome", type:"string"},
+                  nome: {field: "nome", type:"string"},
                   azione: {field: "azione", type:"string"},
                   data_azione: {field: "created_at", type:"date"},
                 }

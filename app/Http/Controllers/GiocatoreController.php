@@ -263,8 +263,9 @@ class GiocatoreController extends Controller
 
         $notess=SeasonPlayer::where('id_stagione',$s->id)->whereNull('matricola')->count();
         $scaduti=SeasonPlayer::where('id_stagione',$s->id)->where('scadenza','<',$d)->count();
+        $mancanti=SeasonPlayer::where('id_stagione',$s->id)->whereNull('scadenza')->count();
         $scadenza=SeasonPlayer::where('id_stagione',$s->id)->whereBetween('scadenza',[$d,$d2])->count();
-        $data=['notess'=>$notess,'scaduti'=>$scaduti,'scadenza'=>$scadenza];
+        $data=['notess'=>$notess,'scaduti'=>($scaduti+$mancanti),'scadenza'=>$scadenza];
         return response()->json($data , 200);
     }
 
