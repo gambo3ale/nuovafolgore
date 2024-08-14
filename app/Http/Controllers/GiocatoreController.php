@@ -73,6 +73,7 @@ class GiocatoreController extends Controller
         $gio->codice_fiscale=$dati['codice_giocatore'];
         $gio->telefono=$dati['telefono_giocatore'];
         $gio->email=$dati['email_giocatore'];
+        $gio->portiere=0;
 
 
         $gen->cognome=$dati['cognome_genitore'];
