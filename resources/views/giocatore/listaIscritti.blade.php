@@ -43,6 +43,7 @@ kendo.culture("it-IT");
                   nascita: {field: "data_nascita", type:"date"},
                   scadenza: {field: "scadenza", type:"date"},
                   matricola: {field: "matricola", type:"string"},
+                  taglia_kit: {field: "taglia_kit", type:"string"},
                   pagato: {field: "pagato", type: "number" }
                 }
               }
@@ -104,7 +105,8 @@ kendo.culture("it-IT");
 
 					}},
             { field: "matricola", title: "N.Matricola" , width:"8%"},
-            { field: "pagato", title: "Quota" , width:"8%"},
+            { field: "taglia_kit", title: "Taglia" , width:"4%", template: "<b class='text-lg'>#: taglia_kit#</b>"},
+            { field: "pagato", title: "Quota" , width:"8%", template: "<b class='text-lg'>#= kendo.toString(pagato, 'n2') #</b> €"},
             { field: "id", title: "Az.", width:"25%", template: function(dataItem) {
 
                 return '<a name="ricevuta" type="button" class="btn btn-sm btn-warning btn-table" id="'+dataItem.id+'" href="/giocatore/inserisciPagamento/'+dataItem.id+'" data-toggle="tooltip" data-placement="bottom" title="Pagamento"><i class="fas fa-cash-register"></i></a> ' +
