@@ -105,9 +105,9 @@ kendo.culture("it-IT");
 
 					}},
             { field: "matricola", title: "N.Matricola" , width:"8%"},
-            { field: "taglia_kit", title: "Taglia" , width:"4%", template: "<b class='text-lg'>#: taglia_kit#</b>"},
-            { field: "pagato", title: "Quota" , width:"8%", template: "<b class='text-lg'>#= kendo.toString(pagato, 'n2') #</b> €"},
-            { field: "id", title: "Az.", width:"25%", template: function(dataItem) {
+            { field: "taglia_kit", title: "Taglia" , width:"4%", template: "<b class='text-lg'>#= taglia_kit != null ? taglia_kit : '' #</b>"},
+            { field: "pagato", title: "Quota" , width:"8%", template: "<b class='text-lg'>#= pagato != null ? kendo.toString(pagato, 'n2') + ' €' : '' #</b> €"},
+            { field: "id", title: "Az.", width:"15%", template: function(dataItem) {
 
                 return '<a name="ricevuta" type="button" class="btn btn-sm btn-warning btn-table" id="'+dataItem.id+'" href="/giocatore/inserisciPagamento/'+dataItem.id+'" data-toggle="tooltip" data-placement="bottom" title="Pagamento"><i class="fas fa-cash-register"></i></a> ' +
 '<button name="certificato" type="button" class="btn btn-sm btn-danger btn-table" id="'+dataItem.id+'" data-toggle="tooltip" data-placement="bottom" title="Certificato" onclick="inserisciCertificato('+dataItem.id+')"><i class="fas fa-diagnoses"></i></button> ' +
