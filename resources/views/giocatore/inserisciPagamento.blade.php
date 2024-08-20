@@ -33,6 +33,7 @@
             event.preventDefault();
             $.post( "{{route('giocatore.registraPagamento')}}", {
                             dati: $(this).serialize(),
+                            user_id: {{$data['ut']}}
                         })
                         .done(function( data ) {
                             alert('Pagamento registrato e ricevuta creata!');

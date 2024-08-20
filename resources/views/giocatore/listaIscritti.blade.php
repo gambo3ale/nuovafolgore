@@ -124,10 +124,12 @@ kendo.culture("it-IT");
     var mat = prompt("Inserisci numero di matricola");
     $.post( "{{route('giocatore.modificaMatricola')}}", {
                           id: id,
-                          mat: mat
+                          mat: mat,
+                          user_id: {{Auth::user()->id}}
                         })
                         .done(function( data ) {
                             $("#grid").data("kendoGrid").dataSource.read();
+                            $('#grid').data('kendoGrid').refresh();
                                     });
     }
 
@@ -136,10 +138,13 @@ kendo.culture("it-IT");
         var dat = prompt("Inserisci data di scadenza", "gg/mm/aaaa");
         $.post( "{{route('giocatore.modificaCertificato')}}", {
                           id: id,
-                          dat: dat
+                          dat: dat,
+                          user_id: {{Auth::user()->id}}
                         })
                         .done(function( data ) {
+                            alert(data);
                             $("#grid").data("kendoGrid").dataSource.read();
+                            $('#grid').data('kendoGrid').refresh();
                                     });
     }
 
@@ -148,10 +153,12 @@ kendo.culture("it-IT");
         if(!confirm("Eliminare il giocatore selezionato?"))
             return 0;
         $.post( "{{route('giocatore.eliminaIscrizione')}}", {
-            id: id, })
-            .done(function( data ) {
+            id: id,
+            user_id: {{Auth::user()->id}}
+        }).done(function( data ) {
                 alert("Iscrizione Eliminata!")
                 $("#grid").data("kendoGrid").dataSource.read();
+                $('#grid').data('kendoGrid').refresh();
                         });
     }
 </script>

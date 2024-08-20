@@ -18,9 +18,17 @@ class PartitaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function calendario()
     {
-        //
+        if (Auth::check() )
+        {
+            $d=Carbon::now()->format('Y-m-d');
+            $s=Stagione::where('inizio','<',$d)->where('fine','>',$d)->first();
+            $cat=Categoria::where('id_stagione',$s->id)->get();
+            $data=['stag'=>$s, 'cat'=>$cat];
+            return view('partita.calendario')->with('data',$data);
+        }
+        return redirect(route('welcome'));
     }
 
     /**
@@ -64,6 +72,10 @@ class PartitaController extends Controller
         parse_str($request->dati, $dati);
         //dd($dati);
         $c=Partita::create($dati);
+        $cat=Categoria::find($c->id_categoria);
+        $c->start=$c->data." ".$c->ora;
+        $c->end=Carbon::parse($c->data." ".$c->ora)->addMinutes($cat->durata_partita)->format('Y-m-d H:i:s');
+        $c->save();
         return response()->json($c , 200);
     }
 
@@ -97,5 +109,22 @@ class PartitaController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function getPartite(Request $request)
+    {
+        $d=Carbon::now()->format('Y-m-d');
+        $s=Stagione::where('inizio','<',$d)->where('fine','>',$d)->first();
+        $partite=DB::table('partitas')
+        ->join('categorias', 'categorias.id', '=', 'partitas.id_categoria')
+        ->select('partitas.*', 'categorias.categoria_estesa','categorias.categoria','categorias.sigla')
+        ->where('partitas.id_stagione',$s->id)
+        ->get();
+        //$query = "SELECT CONCAT(partitas.data, ' ', partitas.ora) AS start, DATE_ADD(CONCAT(partitas.data, ' ', partitas.ora), INTERVAL categorias.durata_partita MINUTE) AS end, partitas.*, categorias.categoria_estesa FROM partitas INNER JOIN categorias ON categorias.id = partitas.id_categoria WHERE partitas.id_stagione = :id_stagione;";
+        //dd($query);
+    // Esegui la query con il binding del parametro in modo sicuro
+    //$partite = DB::select(DB::raw($query), ['id_stagione' => $s->id]);
+
+    return response()->json($partite, 200);
     }
 }

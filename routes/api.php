@@ -7,6 +7,8 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GamboController;
 use App\Http\Controllers\PartitaController;
+use App\Http\Controllers\StaffController;
+
 
 
 Route::get('/user', function (Request $request) {
@@ -32,7 +34,7 @@ Route::post('/admin/getCategorie', [AdminController::class,'getCategorie'])->nam
 Route::get('/partita/cercaAvversario', [PartitaController::class,'cercaAvversario'])->name('partita.cercaAvversario');
 Route::get('/partita/cercaCampo', [PartitaController::class,'cercaCampo'])->name('partita.cercaCampo');
 Route::post('/partita/store', [PartitaController::class,'store'])->name('partita.store');
-
+Route::get('/partita/getPartite', [PartitaController::class,'getPartite'])->name('partita.getPartite');
 
 
 Route::post('/document/moduloIscrizione', [DocumentController::class,'moduloIscrizione'])->name('document.moduloIscrizione');
@@ -43,3 +45,8 @@ Route::post('/gambo/visualizzaCampi', [GamboController::class,'visualizzaCampi']
 Route::post('/gambo/salvaCampo', [GamboController::class,'salvaCampo'])->name('gambo.salvaCampo');
 Route::post('/gambo/visualizzaSquadre', [GamboController::class,'visualizzaSquadre'])->name('gambo.visualizzaSquadre');
 Route::post('/gambo/salvaSquadra', [GamboController::class,'salvaSquadra'])->name('gambo.salvaSquadra');
+
+Route::post('/staff/listaStagione', [StaffController::class,'listaStagione'])->name('staff.listaStagione');
+Route::post('/staff/eliminaIscrizione', [StaffController::class,'eliminaIscrizione'])->name('staff.eliminaIscrizione');
+Route::post('/staff/store', [StaffController::class,'store'])->name('staff.store');
+Route::post('/staff/memorizza', [StaffController::class,'memorizza'])->name('staff.memorizza');

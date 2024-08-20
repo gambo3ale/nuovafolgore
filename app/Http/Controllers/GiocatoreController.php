@@ -54,7 +54,10 @@ class GiocatoreController extends Controller
         if($dati['id_giocatore']!=-1)
         {
             $gio=Giocatore::find($dati['id_giocatore']);
-            $gen=Genitore::find($gio->id_genitore);
+            if($gio->id_genitore!=null)
+                $gen=Genitore::find($gio->id_genitore);
+            else
+                $gen=new Genitore();
             $old=SeasonPlayer::where('id_stagione',($s->id)-1)->where('id_giocatore',$gio->id)->first();
         }
         else
@@ -96,6 +99,7 @@ class GiocatoreController extends Controller
         $sp->id_stagione=$s->id;
         $sp->id_giocatore=$gio->id;
         $sp->iscrizione=$d;
+        $sp->taglia_kit=$dati['taglia_kit'];
         if($old!=null)
         {
             $sp->scadenza=$old->scadenza;
@@ -116,9 +120,19 @@ class GiocatoreController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        if (Auth::check() )
+        {
+            $d=Carbon::now()->format('Y-m-d');
+            $s=Stagione::where('inizio','<',$d)->where('fine','>',$d)->first();
+            $gio=Giocatore::find($id);
+            $gen=Genitore::find($gio->id_genitore);
+            $sp=SeasonPlayer::where('id_giocatore',$gio->id)->with('stagione')->with('pagamenti')->with('ricevute')->orderBy('id_stagione','desc')->get();
+            $data=['stag'=>$s, 'gio'=>$gio, 'gen'=>$gen, 'sp'=>$sp];
+            return view('giocatore.show')->with('data',$data);
+        }
+        return redirect(route('welcome'));
     }
 
     public function squadra($id)
@@ -272,7 +286,10 @@ class GiocatoreController extends Controller
     public function modificaCertificato(Request $request)
     {
         $sp=SeasonPlayer::find($request->id);
-        $sp->scadenza=Carbon::parse($request->dat)->format('Y-m-d');
+        $d=explode('/',$request->dat);
+        if($d==null)
+            return response()->json("FORMATO DATA NON CORRETTO" , 200);
+        $sp->scadenza=Carbon::create($d[2],$d[1],$d[0])->format('Y-m-d');
         $sp->save();
 
         $lg=new LogAzione();
@@ -282,7 +299,7 @@ class GiocatoreController extends Controller
         $lg->id_season_player=$sp->id;
         $lg->azione="Certificato consegnato";
         $lg->save();
-        return response()->json($sp , 200);
+        return response()->json("CERTIFICATO REGISTRATO!" , 200);
     }
 
     public function modificaMatricola(Request $request)
@@ -312,7 +329,8 @@ class GiocatoreController extends Controller
             $num=1;
             if($ric!=null)
                 $num=($ric->numero+1);
-            $data=['gio'=>$gio,'gen'=>$gen,'sp'=>$sp,'num'=>$num];
+            $ut=Auth::user()->id;
+            $data=['gio'=>$gio,'gen'=>$gen,'sp'=>$sp,'num'=>$num, 'ut'=>$ut];
             return view('giocatore.inserisciPagamento')->with('data',$data);
         }
         return redirect(route('welcome'));

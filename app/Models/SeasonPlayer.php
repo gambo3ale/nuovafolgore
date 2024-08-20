@@ -13,4 +13,19 @@ class SeasonPlayer extends Model
     {
         return $this->belongsTo('App\Models\Giocatore', 'id_giocatore');
     }
+
+    public function stagione()
+    {
+        return $this->belongsTo('App\Models\Stagione', 'id_stagione');
+    }
+
+    public function ricevute()
+    {
+        return $this->hasMany('App\Models\Ricevuta', 'id_season_player');
+    }
+
+    public function pagamenti()
+    {
+        return $this->hasMany('App\Models\Pagamento', 'id_season_player');
+    }
 }

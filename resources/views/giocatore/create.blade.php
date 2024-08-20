@@ -173,7 +173,7 @@
     <div class="row">
         <div class="col-3">In caso di rinnovo, ricerca qua il giocatore:</div>
         <div class="col-4">
-            <input type="text" class="form-control" id="giocatore">
+            <input type="text" class="form-control" id="giocatore" style="width: 100%">
 
         </div>
         <div class="col-4">
@@ -318,6 +318,25 @@
                     <div class="form-group">
                         <label>Email</label>
                         <input type="text" class="form-control" id="email_giocatore" name="email_giocatore">
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label>Taglia Kit</label>
+                        <select class="form-select" id="taglia_kit" name='taglia_kit'>
+                            <option value="NS">NON SPECIFICATA</option>
+                            <option value="XXXS">XXXS</option>
+                            <option value="XXS">XXS</option>
+                            <option value="XS">XS</option>
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                            <option value="XXXL">XXXL</option>
+                        </select>
                     </div>
                 </div>
             </div>

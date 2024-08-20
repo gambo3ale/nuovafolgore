@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GiocatoreController;
 use App\Http\Controllers\GamboController;
 use App\Http\Controllers\PartitaController;
+use App\Http\Controllers\StaffController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -31,6 +32,11 @@ Route::get('/giocatore/listaIscritti', [GiocatoreController::class,'listaIscritt
 Route::get('/giocatore/inserisciPagamento/{id}', [GiocatoreController::class,'inserisciPagamento'])->middleware(['auth', 'verified'])->name('giocatore.inserisciPagamento');
 
 Route::get('/partita/create', [PartitaController::class,'create'])->middleware(['auth', 'verified'])->name('partita.create');
+Route::get('/partita/calendario', [PartitaController::class,'calendario'])->middleware(['auth', 'verified'])->name('partita.calendario');
+
+Route::get('/staff/create', [StaffController::class,'create'])->middleware(['auth', 'verified'])->name('staff.create');
+Route::get('/staff/index', [StaffController::class,'index'])->middleware(['auth', 'verified'])->name('staff.index');
+Route::get('/staff/registra', [StaffController::class,'registra'])->middleware(['auth', 'verified'])->name('staff.registra');
 
 
 Route::get('gambo/index', [GamboController::class,'index'])->middleware(['auth', 'verified'])->name('gambo.index');

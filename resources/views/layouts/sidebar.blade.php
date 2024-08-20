@@ -70,6 +70,35 @@ $(document).ready(function () {
 
               <li class="nav-item has-treeview">
                 <a href="]" class="nav-link">
+                    <i class="fa-solid fa-chalkboard-user nav-icon fa-lg"></i>
+                <p class="left"> Staff</p>
+                    <i class="right fas fa-angle-left"></i>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{route('staff.index')}}" class="nav-link">
+                            <i class="fa-regular fa-address-book nav-icon fa-lg"></i>
+                          <p>Lista Staff</p>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="{{route('staff.create')}}" class="nav-link">
+                            <i class="fa-solid fa-user-plus nav-icon fa-lg"></i>
+                          <p>Aggiungi Membro</p>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="{{route('staff.registra')}}" class="nav-link">
+                            <i class="fa-solid fa-business-time nav-icon fa-lg"></i>
+                          <p>Registra Membro</p>
+                        </a>
+                      </li>
+                </ul>
+
+              </li>
+
+              <li class="nav-item has-treeview">
+                <a href="]" class="nav-link">
                     <i class="fa-regular fa-futbol nav-icon fa-lg"></i>
                 <p class="left"> Partite</p>
                     <i class="right fas fa-angle-left"></i>
@@ -82,7 +111,7 @@ $(document).ready(function () {
                         </a>
                       </li>
                       <li class="nav-item">
-                        <a href="{{route('admin.listaRicevute')}}" class="nav-link">
+                        <a href="{{route('partita.calendario')}}" class="nav-link">
                             <i class="fa-regular fa-calendar-days nav-icon fa-lg"></i>
                           <p>Calendario</p>
                         </a>
