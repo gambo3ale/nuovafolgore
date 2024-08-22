@@ -17,6 +17,7 @@ use App\Models\User;
 use App\Models\Campo;
 use App\Models\Squadra;
 use Illuminate\Support\Facades\Cache;
+use Spatie\Permission\Models\Role;
 
 class GamboController extends Controller
 {
@@ -164,5 +165,39 @@ class GamboController extends Controller
         ->where('id_utente',$request->id)
         ->select('log_aziones.*','giocatores.cognome','giocatores.nome')->orderBy('created_at')->get();
         return response()->json($lg , 200);
+    }
+
+    public function roles()
+    {
+        $users = User::all();
+        $roles = Role::all();
+
+        return view('gambo.roles', compact('users', 'roles'));
+    }
+
+    // Aggiunge un ruolo a un utente
+    public function addRole(Request $request)
+    {
+        $user = User::findOrFail($request->input('user_id'));
+        $role = $request->input('role');
+
+        if (!$user->hasRole($role)) {
+            $user->assignRole($role);
+        }
+
+        return redirect()->back()->with('success', 'Role added successfully.');
+    }
+
+    // Rimuove un ruolo da un utente
+    public function removeRole(Request $request)
+    {
+        $user = User::findOrFail($request->input('user_id'));
+        $role = $request->input('role');
+
+        if ($user->hasRole($role)) {
+            $user->removeRole($role);
+        }
+
+        return redirect()->back()->with('success', 'Role removed successfully.');
     }
 }

@@ -27,6 +27,7 @@
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
 
 <script>
+
 document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
 
@@ -40,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         height: 'auto',
         slotMinTime: '08:00:00',  // Ora di inizio
-        slotMaxTime: '20:00:00',  // Ora di fine
+        slotMaxTime: '21:00:00',  // Ora di fine
         events: function(fetchInfo, successCallback, failureCallback) {
             $.ajax({
                 url: "{{ route('partita.getPartite') }}",
@@ -58,6 +59,9 @@ document.addEventListener('DOMContentLoaded', function() {
                                 sigla: item.sigla,
                                 avversario: item.avversario,
                                 id_campo: item.id_campo,
+                                id_categoria: item.id_categoria,
+                                id_stagione: item.id_stagione,
+                                id_avversario: item.id_avversario,
                                 campionato: item.campionato,
                                 data: item.data, // Aggiunge la data
                                 ora: item.ora
@@ -73,11 +77,15 @@ document.addEventListener('DOMContentLoaded', function() {
             if (info.jsEvent.detail === 2) { // 2 = doppio clic
                 $('#editEventModal').modal('show');
                 // Popola i campi del form con i dati dell'evento
-                $('#eventId').val(info.event.id);
-                $('#eventTitle').val(info.event.extendedProps.avversario);
-                $('#eventCampo').val(info.event.extendedProps.campo);
-                $('#eventDate').val(info.event.extendedProps.data);
-                $('#eventTime').val(info.event.extendedProps.ora);
+                $('#id').val(info.event.id);
+                $('#avversario').val(info.event.extendedProps.avversario);
+                $('#id_avversario').val(info.event.extendedProps.id_avversario);
+                $('#campo').val(info.event.extendedProps.campo);
+                $('#id_campo').val(info.event.extendedProps.id_campo);
+                $('#id_stagione').val(info.event.extendedProps.id_stagione);
+                $('#id_categoria').val(info.event.extendedProps.id_categoria);
+                $('#data').val(info.event.extendedProps.data);
+                $('#ora').val(info.event.extendedProps.ora);
             }
         },
         eventContent: function(arg) {
@@ -158,9 +166,111 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     calendar.render();
+
 });
 </script>
 
+<script>
+    function onSelect2(e) {
+        //alert(e.dataItem.id);
+        $("#id_avversario").val(e.dataItem.id);
+        $("#avversario").val(e.dataItem.nome);
+    }
+
+        $(document).ready(function(){
+          $("#avversario").kendoAutoComplete({
+                      dataValueField:"id",
+                      dataTextField:"ContactName",
+                      headerTemplate: '<div class="dropdown-header">' +
+                              '<span class="k-widget k-header">Squadre</span>' +
+                          '</div>',
+                          template: kendo.template(
+                        '<div class="autocomplete-item">' +
+                        '    <span class="text-bold">#= nome #</span> - #= comune #' +
+                        '</div>'
+                    ),
+                      filter: "contains",
+                      minLength: 3,
+                      select: onSelect2,
+                      dataSource: {
+                          dataType: "json",
+                          serverFiltering: true,
+                          transport: {
+                              read: "{{route('partita.cercaAvversario')}}",
+                              //dataType: 'json'
+                          }
+                      },
+                      schema: {
+                              parse: function(response) {
+                                  console.log(response)
+                                  $.each(response, function(idx, elem) {
+                                  elem.ContactName = elem.nome+" - "+elem.comune;
+
+                                  });
+                                  return response;
+                              }
+                          }
+                  });
+              });
+    </script>
+
+    <script>
+        function onSelect3(e) {
+            //alert(e.dataItem.id);
+            $("#id_campo").val(e.dataItem.id);
+            $("#campo").val(e.dataItem.titolo);
+        }
+
+            $(document).ready(function(){
+              $("#campo").kendoAutoComplete({
+                          dataValueField:"id",
+                          dataTextField:"ContactName",
+                          headerTemplate: '<div class="dropdown-header">' +
+                                  '<span class="k-widget k-header">Campo</span>' +
+                              '</div>',
+                              template: kendo.template(
+                            '<div class="autocomplete-item">' +
+                            '    <span class="text-bold">#= titolo #</span> - #= abbreviato #' +
+                            '</div>'
+                        ),
+                          filter: "contains",
+                          minLength: 3,
+                          select: onSelect3,
+                          dataSource: {
+                              dataType: "json",
+                              serverFiltering: true,
+                              transport: {
+                                  read: "{{route('partita.cercaCampo')}}",
+                                  //dataType: 'json'
+                              }
+                          },
+                          schema: {
+                                  parse: function(response) {
+                                      console.log(response)
+                                      $.each(response, function(idx, elem) {
+                                      elem.ContactName = elem.titolo+" - "+elem.abbreviato;
+
+                                      });
+                                      return response;
+                                  }
+                              }
+                      });
+                  });
+        </script>
+<script>
+$("#editEventForm").submit( function (ev){
+    ev.preventDefault();
+    $.post( "{{route('partita.update')}}", {
+                            dati: $(this).serialize(),
+                            user_id: {{Auth::user()->id}}
+                        })
+                        .done(function( data ) {
+                            alert('Partita modificata!');
+                            self.location.href = self.location.href;
+                        });
+
+})
+</script>
 
 
 @endsection
@@ -169,9 +279,14 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <div id="scheduler"></div>
             <div id="calendar"></div>
         </div>
+    </div>
+    <div class="row">
+        <b class="mt-2 mb-2">Legenda</b>
+        <div class="col-2"><span class="table-success p-1 border-primary border rounded-3">&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;</span>&emsp13; Partita a Vallemaino</div>
+        <div class="col-2"><span class="table-warning p-1 border-primary border rounded-3">&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;</span>&emsp13; Partita a Collemarino</div>
+        <div class="col-2"><span class="table-info p-1 border-primary border rounded-3">&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;</span>&emsp13; Partita in Trasferta</div>
     </div>
 </div>
 
@@ -184,31 +299,35 @@ document.addEventListener('DOMContentLoaded', function() {
           <h5 class="modal-title" id="editEventModalLabel">Modifica Evento</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        <form id="editEventForm">
         <div class="modal-body">
-          <form id="editEventForm">
-            <input type="hidden" id="eventId">
+            <input type="hidden" id="id" name="id">
+            <input type="hidden" id="id_stagione" name="id_stagione">
+            <input type="hidden" id="id_categoria" name="id_categoria">
             <div class="mb-3">
               <label for="eventTitle" class="form-label">Avversario</label>
-              <input type="text" class="form-control" id="eventTitle">
+              <input type="text" class="form-control" id="avversario" name="avversario" width="100%">
+              <input type="hidden" class="form-control" id="id_avversario" name="id_avversario">
             </div>
             <div class="mb-3">
               <label for="eventCampo" class="form-label">Campo</label>
-              <input type="text" class="form-control" id="eventCampo">
+              <input type="text" class="form-control" id="campo" name="campo" width="100%">
+              <input type="hidden" class="form-control" id="id_campo" name="id_campo">
             </div>
             <div class="mb-3">
               <label for="eventDate" class="form-label">Data</label>
-              <input type="date" class="form-control" id="eventDate">
+              <input type="date" class="form-control" id="data" name="data">
             </div>
             <div class="mb-3">
               <label for="eventTime" class="form-label">Ora</label>
-              <input type="time" class="form-control" id="eventTime">
+              <input type="time" class="form-control" id="ora" name="ora">
             </div>
-          </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
-          <button type="button" class="btn btn-primary" id="saveEventBtn">Salva modifiche</button>
+          <button class="btn btn-primary" id="saveEventBtn" type="submit">Salva modifiche</button>
         </div>
+        </form>
       </div>
     </div>
   </div>

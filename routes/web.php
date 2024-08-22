@@ -17,8 +17,12 @@ Route::get('/', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');*/
 
-Route::middleware([\App\Http\Middleware\UpdateUserActivity::class, 'auth'])->group(function () {
-Route::get('/dashboard', [AdminController::class,'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::group(['middleware' => ['role:user','auth']], function () {
+    Route::get('/dashboard', [AdminController::class,'index'])->middleware(['auth', 'verified'])->name('dashboard');
+});
+
+Route::group(['middleware' => ['role:segreteria','auth']], function () {
+
 Route::get('/admin/archivioIscritti', [AdminController::class,'archivioIscritti'])->middleware(['auth', 'verified'])->name('admin.archivioIscritti');
 Route::get('/admin/archivioRicevute', [AdminController::class,'archivioRicevute'])->middleware(['auth', 'verified'])->name('admin.archivioRicevute');
 Route::get('/admin/listaRicevute', [AdminController::class,'listaRicevute'])->middleware(['auth', 'verified'])->name('admin.listaRicevute');
@@ -37,10 +41,14 @@ Route::get('/partita/calendario', [PartitaController::class,'calendario'])->midd
 Route::get('/staff/create', [StaffController::class,'create'])->middleware(['auth', 'verified'])->name('staff.create');
 Route::get('/staff/index', [StaffController::class,'index'])->middleware(['auth', 'verified'])->name('staff.index');
 Route::get('/staff/registra', [StaffController::class,'registra'])->middleware(['auth', 'verified'])->name('staff.registra');
+});
 
-
+Route::group(['middleware' => ['role:admin','auth']], function () {
 Route::get('gambo/index', [GamboController::class,'index'])->middleware(['auth', 'verified'])->name('gambo.index');
 Route::get('gambo/campi', [GamboController::class,'campi'])->middleware(['auth', 'verified'])->name('gambo.campi');
+Route::get('gambo/roles', [GamboController::class, 'roles'])->name('gambo.roles');
+Route::post('gambo/roles/add', [GamboController::class, 'addRole'])->name('roles.add');
+Route::post('gambo/roles/remove', [GamboController::class, 'removeRole'])->name('roles.remove');
 });
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -57,6 +65,10 @@ Route::get('/check-auth', function () {
         return 'Authenticated user ID: ' . Auth::id();
     }
     return 'User is not authenticated';
+});
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin', [GamboController::class, 'index'])->name('admin.dashboard');
 });
 
 Route::get('/test-user-activity', function () {

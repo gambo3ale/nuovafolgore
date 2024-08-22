@@ -98,9 +98,16 @@ class PartitaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        parse_str($request->dati, $dati);
+        $c=Partita::where('id',$dati['id'])->update($dati);
+        $c=Partita::find($dati['id']);
+        $cat=Categoria::find($c->id_categoria);
+        $c->start=$c->data." ".$c->ora;
+        $c->end=Carbon::parse($c->data." ".$c->ora)->addMinutes($cat->durata_partita)->format('Y-m-d H:i:s');
+        $c->save();
+        return response()->json($c , 200);
     }
 
     /**

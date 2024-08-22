@@ -37,6 +37,7 @@ $(document).ready(function () {
     <!-- Sidebar Menu -->
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            @if(Auth::user()->hasRole('segreteria'))
             <li class="nav-item">
                 <a href="{{route('giocatore.create')}}" class="nav-link">
                     <i class="fa-regular fa-pen-to-square nav-icon fa-lg"></i>
@@ -142,9 +143,9 @@ $(document).ready(function () {
                 </ul>
 
               </li>
+              @endif
 
-
-              @if(Auth::user()->id==1)
+              @if(Auth::user()->hasRole('admin'))
               <li class="nav-item has-treeview text-info">
                 <a href="]" class="nav-link">
                     <i class="fa-solid fa-crown nav-icon text-info"></i>
@@ -158,6 +159,12 @@ $(document).ready(function () {
                       <p class="table-primary">Utenti e Log</p>
                     </a>
                   </li>
+                  <li class="nav-item text-info table-primary">
+                    <a href="{{route('gambo.roles')}}" class="nav-link {{ Request::is('gambo.roles') ? 'active' : '' }}">
+                        <i class="fa-solid fa-chess nav-icon fa-lg table-primary"></i>
+                        <p class="table-primary">Ruoli Utenti</p>
+                      </a>
+                    </li>
                   <li class="nav-item text-warning table-primary">
                     <a href="{{route('gambo.campi')}}" class="nav-link">
                         <i class="fa-solid fa-building-flag nav-icon fa-lg table-primary"></i>

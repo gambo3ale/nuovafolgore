@@ -34,6 +34,7 @@ Route::post('/admin/getCategorie', [AdminController::class,'getCategorie'])->nam
 Route::get('/partita/cercaAvversario', [PartitaController::class,'cercaAvversario'])->name('partita.cercaAvversario');
 Route::get('/partita/cercaCampo', [PartitaController::class,'cercaCampo'])->name('partita.cercaCampo');
 Route::post('/partita/store', [PartitaController::class,'store'])->name('partita.store');
+Route::post('/partita/update', [PartitaController::class,'update'])->name('partita.update');
 Route::get('/partita/getPartite', [PartitaController::class,'getPartite'])->name('partita.getPartite');
 
 
