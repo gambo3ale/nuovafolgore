@@ -318,6 +318,25 @@ class GiocatoreController extends Controller
         return response()->json($sp , 200);
     }
 
+    public function modificaTaglia(Request $request)
+    {
+        $sp=SeasonPlayer::find($request->id);
+        if($request->mat!="" && $request->mat!=null && $request->mat!="NS")
+            $sp->taglia_kit=$request->mat;
+        else
+            $sp->taglia_kit="NS";
+        $sp->save();
+
+        $lg=new LogAzione();
+        $lg->id_utente=$request->user_id;
+        $lg->id_giocatore=$sp->id_giocatore;
+        $lg->id_stagione=$sp->id_stagione;
+        $lg->id_season_player=$sp->id;
+        $lg->azione="Taglia kit Registrata";
+        $lg->save();
+        return response()->json($sp , 200);
+    }
+
     public function inserisciPagamento($id)
     {
         if (Auth::check() )

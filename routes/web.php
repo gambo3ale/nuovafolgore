@@ -6,6 +6,8 @@ use App\Http\Controllers\GiocatoreController;
 use App\Http\Controllers\GamboController;
 use App\Http\Controllers\PartitaController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\MagazzinoController;
+use App\Http\Controllers\AllenatoreController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -49,7 +51,22 @@ Route::get('gambo/campi', [GamboController::class,'campi'])->middleware(['auth',
 Route::get('gambo/roles', [GamboController::class, 'roles'])->name('gambo.roles');
 Route::post('gambo/roles/add', [GamboController::class, 'addRole'])->name('roles.add');
 Route::post('gambo/roles/remove', [GamboController::class, 'removeRole'])->name('roles.remove');
+Route::get('gambo/gestione-squadre', [GamboController::class, 'squadre'])->name('gambo.squadre');
+Route::post('gambo/assegna-squadra', [GamboController::class, 'assegnaSquadra'])->name('assegna.squadra');
+Route::delete('gambo/rimuovi-squadra/{id}', [GamboController::class, 'rimuoviSquadra'])->name('rimuovi.squadra');
 });
+
+
+Route::group(['middleware' => ['role:magazziniere','auth']], function () {
+    Route::get('/dashboardMagazzino', [MagazzinoController::class,'index'])->middleware(['auth', 'verified'])->name('dashboardMagazzino');
+});
+
+Route::group(['middleware' => ['role:allenatore','auth']], function () {
+    Route::get('/dashboardCoach', [AllenatoreController::class,'index'])->middleware(['auth', 'verified'])->name('dashboardAllenatore');
+    Route::get('/allenatore/squadra/{id}', [AllenatoreController::class,'squadra'])->middleware(['auth', 'verified'])->name('allenatore.squadra');
+});
+
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

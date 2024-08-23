@@ -12,10 +12,12 @@ use App\Models\Genitore;
 use App\Models\Pagamento;
 use App\Models\SeasonPlayer;
 use App\Models\Ricevuta;
-use App\Models\LogAzione;
+use App\Models\SquadraAllenata;
+use App\Models\Categoria;
 use App\Models\User;
 use App\Models\Campo;
 use App\Models\Squadra;
+use App\Models\Staff;
 use Illuminate\Support\Facades\Cache;
 use Spatie\Permission\Models\Role;
 
@@ -199,5 +201,43 @@ class GamboController extends Controller
         }
 
         return redirect()->back()->with('success', 'Role removed successfully.');
+    }
+
+    public function squadre()
+    {
+        $d=Carbon::now()->format('Y-m-d');
+        $s=Stagione::where('inizio','<',$d)->where('fine','>',$d)->first();
+        $allenatori = User::all();
+        $categorie = Categoria::where('id_stagione',$s->id)->get();
+        $staff=Staff::where('ruolo','ALLENATORE')->orWhere('ruolo',"COLLABORATORE TECNICO")->orderBy('cognome')->get();
+        $stagioni=Stagione::orderBy('inizio','desc')->get();
+
+        return view('gambo.squadre', compact('allenatori', 'categorie','staff','stagioni'));
+    }
+
+    public function assegnaSquadra(Request $request)
+    {
+        $request->validate([
+            'allenatore_id' => 'required|exists:users,id',
+            'categoria_id' => 'required|exists:categorias,id',
+        ]);
+
+        SquadraAllenata::create([
+            'id_utente' => $request->allenatore_id,
+            'id_categoria' => $request->categoria_id,
+            'id_staff' => $request->staff_id,
+            'id_stagione' => $request->stagione_id,
+        ]);
+
+        return redirect()->back()->with('success', 'Squadra assegnata con successo.');
+    }
+
+    // Rimuove una squadra da un allenatore
+    public function rimuoviSquadra($id)
+    {
+        $squadraAllenata = SquadraAllenata::findOrFail($id);
+        $squadraAllenata->delete();
+
+        return redirect()->back()->with('success', 'Squadra rimossa con successo.');
     }
 }

@@ -8,6 +8,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GamboController;
 use App\Http\Controllers\PartitaController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\MagazzinoController;
+use App\Http\Controllers\AllenatoreController;
 
 
 
@@ -24,6 +26,7 @@ Route::post('/giocatore/store', [GiocatoreController::class,'store'])->name('gio
 Route::post('/giocatore/scadenze', [GiocatoreController::class,'scadenze'])->name('giocatore.scadenze');
 Route::post('/giocatore/modificaCertificato', [GiocatoreController::class,'modificaCertificato'])->name('giocatore.modificaCertificato');
 Route::post('/giocatore/modificaMatricola', [GiocatoreController::class,'modificaMatricola'])->name('giocatore.modificaMatricola');
+Route::post('/giocatore/modificaTaglia', [GiocatoreController::class,'modificaTaglia'])->name('giocatore.modificaTaglia');
 Route::post('/giocatore/registraPagamento', [GiocatoreController::class,'registraPagamento'])->name('giocatore.registraPagamento');
 Route::post('/giocatore/eliminaIscrizione', [GiocatoreController::class,'eliminaIscrizione'])->name('giocatore.eliminaIscrizione');
 Route::post('/giocatore/giocatoriSquadra', [GiocatoreController::class,'giocatoriSquadra'])->name('giocatore.giocatoriSquadra');
@@ -51,3 +54,13 @@ Route::post('/staff/listaStagione', [StaffController::class,'listaStagione'])->n
 Route::post('/staff/eliminaIscrizione', [StaffController::class,'eliminaIscrizione'])->name('staff.eliminaIscrizione');
 Route::post('/staff/store', [StaffController::class,'store'])->name('staff.store');
 Route::post('/staff/memorizza', [StaffController::class,'memorizza'])->name('staff.memorizza');
+
+
+Route::post('/magazzino/lista', [MagazzinoController::class,'lista'])->name('magazzino.lista');
+Route::post('/magazzino/aggiornaTaglia', [MagazzinoController::class,'aggiornaTaglia'])->name('magazzino.aggiornaTaglia');
+Route::post('/magazzino/aggiornaNote', [MagazzinoController::class,'aggiornaNote'])->name('magazzino.aggiornaNote');
+Route::post('/magazzino/registraConsegna', [MagazzinoController::class,'registraConsegna'])->name('magazzino.registraConsegna');
+Route::post('/magazzino/annullaConsegna', [MagazzinoController::class,'annullaConsegna'])->name('magazzino.annullaConsegna');
+
+Route::post('/allenatore/getCategorie', [AllenatoreController::class,'getCategorie'])->name('allenatore.getCategorie');
+

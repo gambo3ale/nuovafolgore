@@ -171,6 +171,12 @@ $(document).ready(function () {
                       <p class="table-primary">Impianti e Squadre</p>
                     </a>
                   </li>
+                  <li class="nav-item text-warning table-primary">
+                    <a href="{{route('gambo.squadre')}}" class="nav-link">
+                        <i class="fa-regular fa-font-awesome nav-icon fa-lg table-primary"></i>
+                      <p class="table-primary">Assegnazione Squadre</p>
+                    </a>
+                  </li>
                 </ul>
 
               </li>

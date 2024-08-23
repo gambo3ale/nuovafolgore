@@ -98,6 +98,7 @@ $(document).ready(function(){
     </ul>
 
     <!-- SEARCH FORM -->
+    @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('admin'))
     <form class="form-inline ml-3">
       <div class="input-group input-group-md">
         <input class="form-control form-control-navbar form-control-sm" type="search" placeholder="Cerca Giocatore..." aria-label="Search" id="cercaGiocatore" size="40">
@@ -109,10 +110,10 @@ $(document).ready(function(){
         </div>
       </div>
     </form>
-
+    @endif
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
-
+        @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('admin'))
         <li class="nav-item dropdown d-sm-inline-block">
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="nuovoMessaggioDropdown" id="boxMes">
                 <!-- Contenuto del dropdown -->
@@ -144,6 +145,7 @@ $(document).ready(function(){
         <li class="nav-item d-none d-sm-inline-block">
             <a href="#" class="nav-link" id="notess"><i class="fa-regular fa-id-card fa-xl"></i></a>
         </li>
+        @endif
       <!-- Messages Dropdown Menu -->
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

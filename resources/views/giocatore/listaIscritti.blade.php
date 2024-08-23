@@ -105,13 +105,14 @@ kendo.culture("it-IT");
 
 					}},
             { field: "matricola", title: "N.Matricola" , width:"8%"},
-            { field: "taglia_kit", title: "Taglia" , width:"4%", template: "<b class='text-lg'>#= taglia_kit != null ? taglia_kit : '' #</b>"},
+            { field: "taglia_kit", title: "Taglia" , width:"4%", template: "<b class='text-lg'>#= taglia_kit != null && taglia_kit != 'NS' ? taglia_kit : '' #</b>"},
             { field: "pagato", title: "Quota" , width:"8%", template: "<b class='text-lg'>#= pagato != null ? kendo.toString(pagato, 'n2') + ' €' : '' #</b>"},
             { field: "id", title: "Az.", width:"15%", template: function(dataItem) {
 
                 return '<a name="ricevuta" type="button" class="btn btn-sm btn-warning btn-table" id="'+dataItem.id+'" href="/giocatore/inserisciPagamento/'+dataItem.id+'" data-toggle="tooltip" data-placement="bottom" title="Pagamento"><i class="fas fa-cash-register"></i></a> ' +
 '<button name="certificato" type="button" class="btn btn-sm btn-danger btn-table" id="'+dataItem.id+'" data-toggle="tooltip" data-placement="bottom" title="Certificato" onclick="inserisciCertificato('+dataItem.id+')"><i class="fas fa-diagnoses"></i></button> ' +
 '<button name="tesseramento" onclick="inserisciTesseramento('+dataItem.id+')" type="button" class="btn btn-sm btn-success btn-table" id="'+dataItem.id+'" data-toggle="tooltip" data-placement="bottom" title="Tesseramento"><i class="fas fa-id-card"></i></button> ' +
+'<button name="tagliakit" onclick="inserisciTaglia('+dataItem.id+')" type="button" class="btn btn-sm bg-pink btn-table" id="'+dataItem.id+'" data-toggle="tooltip" data-placement="bottom" title="Taglia Kit"><i class="fa-solid fa-shirt"></i></button> ' +
 '<a name="riepilogo" type="button" class="btn btn-sm btn-primary btn-table" id="'+dataItem.id+'" href="/giocatore/show/'+dataItem.idPlayer+'" data-toggle="tooltip" data-placement="bottom" title="Scheda Gioc."><i class="fas fa-file-invoice"></i></a>';
                 }},
           ],
@@ -125,6 +126,20 @@ kendo.culture("it-IT");
     {
     var mat = prompt("Inserisci numero di matricola");
     $.post( "{{route('giocatore.modificaMatricola')}}", {
+                          id: id,
+                          mat: mat,
+                          user_id: {{Auth::user()->id}}
+                        })
+                        .done(function( data ) {
+                            $("#grid").data("kendoGrid").dataSource.read();
+                            $('#grid').data('kendoGrid').refresh();
+                                    });
+    }
+
+    function inserisciTaglia(id)
+    {
+    var mat = prompt("Inserisci numero di matricola");
+    $.post( "{{route('giocatore.modificaTaglia')}}", {
                           id: id,
                           mat: mat,
                           user_id: {{Auth::user()->id}}
